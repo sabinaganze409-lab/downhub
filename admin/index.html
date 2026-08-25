@@ -8,7 +8,11 @@
 </head>
 <body>
   <script>
+    // Spécifie l'URL exacte de ton projet Netlify
     if (window.netlifyIdentity) {
+      window.netlifyIdentity.init({
+        APIUrl: "https://imaginative-mandazi-f90309.netlify.app/.netlify/identity"
+      });
       window.netlifyIdentity.on("init", user => {
         if (!user) {
           window.netlifyIdentity.on("login", () => {
