@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: sabinaganze409-lab/downhub
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "apps"
+    label: "Applications"
+    folder: "content/apps"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nom de l'application", name: "title", widget: "string" }
+      - { label: "Catégorie", name: "category", widget: "select", options: ["Communication", "Réseaux Sociaux", "Divertissement", "Outils & Sécurité"] }
+      - { label: "Note (ex: 4.5)", name: "rating", widget: "string" }
+      - { label: "Lien de téléchargement / Fichier APK", name: "download_url", widget: "string" }
+      - { label: "Icône / Logo", name: "icon", widget: "image" }
