@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: sabinaganze409-lab/downhub
   branch: main
 
 media_folder: "images"
