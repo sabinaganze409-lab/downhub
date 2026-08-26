@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DownHub - Téléchargement d'Applications</title>
+    <title>DownHub - Galerie d'Applications</title>
     <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome pour les icônes (Partage, Loupe, etc.) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <header>
         <h1>DownHub</h1>
-        <!-- Barre de recherche réparée -->
         <div class="search-container">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="search-input" placeholder="Rechercher une application ou un jeu..." oninput="handleSearch()">
+            <input type="text" id="search-input" placeholder="Rechercher une application..." oninput="handleSearch()">
         </div>
     </header>
 
-    <main>
-        <!-- Boutons de filtres / catégories -->
+    <!-- VUE 1 : ACCUEIL ET GRILLE D'APPLICATIONS -->
+    <main id="home-view">
         <div class="category-tabs">
             <button class="tab-btn active" onclick="switchCategory('all', this)">Tous</button>
             <button class="tab-btn" onclick="switchCategory('android', this)">Android</button>
@@ -30,14 +28,48 @@
             <button class="tab-btn" onclick="switchCategory('vpn', this)">VPN</button>
         </div>
 
-        <!-- Zone d'affichage des cartes d'applications -->
+        <!-- Grille de cartes -->
         <div id="apps-container" class="apps-grid"></div>
 
-        <!-- Bouton pour charger les applications suivantes -->
         <div style="text-align: center; margin: 25px 0;">
-            <button id="load-more-btn" onclick="loadMoreApps()" style="display: none; padding: 12px 28px; background: #007bff; color: white; border: none; border-radius: 25px; cursor: pointer; font-size: 1em; font-weight: bold;">
-                Charger plus d'applications
+            <button id="load-more-btn" class="load-more-btn" onclick="loadMoreApps()" style="display: none;">
+                Charger plus
             </button>
+        </div>
+    </main>
+
+    <!-- VUE 2 : PAGE DE DÉTAIL D'UNE APPLICATION -->
+    <main id="details-view" class="details-container" style="display: none;">
+        <button class="btn-back" onclick="closeDetails()">
+            <i class="fa-solid fa-arrow-left"></i> Retour aux applications
+        </button>
+
+        <div class="detail-card">
+            <div class="detail-header">
+                <img id="detail-icon" src="" alt="Icone App" class="detail-icon">
+                <div class="detail-meta">
+                    <h2 id="detail-title">Nom de l'application</h2>
+                    <p id="detail-category" class="detail-category">Catégorie</p>
+                    <div class="detail-stats">
+                        <span id="detail-rating">⭐ 0.0</span>
+                        <span id="detail-size">0 MB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-description">
+                <h3>À propos de cette application</h3>
+                <p id="detail-text">Description de l'application...</p>
+            </div>
+
+            <div class="detail-actions">
+                <a id="detail-download-btn" href="#" target="_blank" class="btn-download-large">
+                    <i class="fa-solid fa-download"></i> Télécharger
+                </a>
+                <button id="detail-share-btn" class="btn-share-large">
+                    <i class="fa-solid fa-share-nodes"></i> Partager
+                </button>
+            </div>
         </div>
     </main>
 
