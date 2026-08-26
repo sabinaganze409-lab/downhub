@@ -41,26 +41,33 @@ const realApps = {
 };
 
 // Fonction pour générer 1 000 applications par catégorie (Total = 5 000)
-function generateDatabase() {
-    const categories = ['android', 'windows', 'mac', 'jeux', 'vpn'];
+function createAppCard(app) {
+    const safeName = encodeURIComponent(app.name);
+    const safeUrl = encodeURIComponent(app.downloadUrl);
     
-    categories.forEach(cat => {
-        // Ajouter d'abord les vraies applications
-        appsDatabase[cat] = [...realApps[cat]];
-        
-        // Compléter jusqu'à 1 000 applications par catégorie
-        const baseCount = appsDatabase[cat].length;
-        for (let i = baseCount + 1; i <= 1000; i++) {
-            appsDatabase[cat].push({
-                name: `${cat.toUpperCase()} App Pro ${i}`,
-                category: cat === 'jeux' ? 'Jeu Vidéo' : (cat === 'vpn' ? 'VPN & Sécurité' : 'Utilitaire'),
-                rating: (3.5 + Math.random() * 1.5).toFixed(1),
-                size: `${Math.floor(Math.random() * 90) + 10} MB`,
-                icon: appsDatabase[cat][i % baseCount].icon,
-                downloadUrl: "https://google.com"
-            });
-        }
-    });
+    // Image par défaut si le lien d'origine échoue
+    const fallbackIcon = "https://cdn-icons-png.flaticon.com/512/2589/2589175.png";
+
+    return `
+        <div class="app-card">
+            <div class="app-info">
+                <img class="app-icon" 
+                     src="${app.icon}" 
+                     alt="${app.name}" 
+                     onerror="this.onerror=null; this.src='${fallbackIcon}';">
+                <div class="app-details">
+                    <h4>${app.name}</h4>
+                    <span>${app.category} • ⭐ ${app.rating} • ${app.size}</span>
+                </div>
+            </div>
+            <div class="app-actions">
+                <button class="btn-share" onclick="shareApp('${safeName}', '${safeUrl}')" title="Partager">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+                <a href="${app.downloadUrl}" target="_blank" class="btn-download">Télécharger</a>
+            </div>
+        </div>
+    `;
 }
 
 // Variables de gestion de l'affichage
