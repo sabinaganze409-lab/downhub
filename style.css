@@ -1,10 +1,9 @@
-/* Style général */
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: #0f172a;
     color: #ffffff;
     margin: 0;
@@ -21,7 +20,7 @@ h1 {
     margin-bottom: 15px;
 }
 
-/* Barre de recherche adaptative */
+/* Barre de recherche */
 .search-container {
     position: relative;
     width: 100%;
@@ -40,11 +39,6 @@ h1 {
     outline: none;
 }
 
-.search-container input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
-}
-
 .search-icon {
     position: absolute;
     left: 15px;
@@ -53,13 +47,14 @@ h1 {
     color: #aaa;
 }
 
-/* Onglets de catégories défilables sur mobile */
+/* Onglets filtres */
 .category-tabs {
     display: flex;
     gap: 8px;
     justify-content: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    margin-bottom: 25px;
+    overflow-x: auto;
+    padding-bottom: 5px;
 }
 
 .tab-btn {
@@ -71,145 +66,174 @@ h1 {
     cursor: pointer;
     font-size: 0.85rem;
     white-space: nowrap;
-    transition: all 0.3s ease;
 }
 
 .tab-btn.active {
     background: #007bff;
     border-color: #007bff;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
 }
 
-/* Cartes d'applications */
+/* GRILLE EN BLOCS (ICÔNES RANGÉES PAR COLONNES/LIGNES) */
 .apps-grid {
-    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+    max-width: 1000px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
 }
 
-.app-card {
+.app-card-grid {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 12px 16px;
+    border-radius: 16px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-card-grid:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.app-card-grid img {
+    width: 64px;
+    height: 64px;
     border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    object-fit: cover;
+    margin-bottom: 8px;
+    background-color: #1e293b;
 }
 
-.app-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-    min-width: 0; /* Empêche le texte de dépasser */
+.app-card-grid h4 {
+    margin: 4px 0 2px 0;
+    font-size: 0.85rem;
+    color: #fff;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.app-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+.app-card-grid span {
+    font-size: 0.72rem;
+    color: #aaa;
+}
+
+/* PAGE DÉTAILS D'UNE APPLICATION */
+.details-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.btn-back {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.detail-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.detail-header {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.detail-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
     object-fit: cover;
     background-color: #1e293b;
-    flex-shrink: 0;
 }
 
-.app-details {
-    overflow: hidden;
+.detail-meta h2 {
+    margin: 0 0 6px 0;
+    font-size: 1.3rem;
 }
 
-.app-details h4 {
-    margin: 0 0 4px 0;
-    color: #fff;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.app-details span {
-    font-size: 0.78rem;
+.detail-category {
+    margin: 0 0 8px 0;
     color: #aaa;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.app-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-}
-
-.btn-download {
-    background: #007bff;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
     font-size: 0.85rem;
 }
 
-.btn-share {
+.detail-stats {
+    display: flex;
+    gap: 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #007bff;
+}
+
+.detail-description {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+    margin-bottom: 25px;
+}
+
+.detail-description h3 {
+    margin-top: 0;
+    font-size: 1rem;
+}
+
+.detail-description p {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-download-large {
+    flex: 2;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.btn-share-large {
+    flex: 1;
     background: rgba(255, 255, 255, 0.15);
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-weight: bold;
+    font-size: 0.95rem;
 }
 
-/* OPTIMISATION MOBILE (Écrans < 600px) */
-@media (max-width: 600px) {
-    body {
-        padding: 10px;
-    }
-
-    /* Rend les onglets défilables horizontalement sans écraser le texte */
-    .category-tabs {
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding-bottom: 8px;
-        flex-wrap: nowrap;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .tab-btn {
-        padding: 8px 14px;
-        font-size: 0.8rem;
-    }
-
-    .app-card {
-        padding: 10px 12px;
-    }
-
-    .app-icon {
-        width: 42px;
-        height: 42px;
-    }
-
-    .app-details h4 {
-        font-size: 0.88rem;
-    }
-
-    .app-details span {
-        font-size: 0.72rem;
-    }
-
-    .btn-download {
-        padding: 7px 10px;
-        font-size: 0.78rem;
-    }
-
-    .btn-share {
-        padding: 7px 9px;
-        font-size: 0.78rem;
-    }
+.load-more-btn {
+    padding: 10px 24px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
