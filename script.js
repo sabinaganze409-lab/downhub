@@ -1,12 +1,17 @@
 const appsDatabase = { android: [], windows: [], mac: [], jeux: [], vpn: [] };
 
-// Collection d'icônes par défaut fonctionnelles (logos d'applications neutres)
-const defaultIcons = [
+// Banque d'icônes variées et fonctionnelles pour la génération
+const iconBank = [
     "https://cdn-icons-png.flaticon.com/512/300/300221.png", // Google / App
-    "https://cdn-icons-png.flaticon.com/512/732/732208.png", // Game / Controler
-    "https://cdn-icons-png.flaticon.com/512/2099/2099058.png", // Settings / Tool
+    "https://cdn-icons-png.flaticon.com/512/732/732208.png", // Game
+    "https://cdn-icons-png.flaticon.com/512/2099/2099058.png", // Settings
     "https://cdn-icons-png.flaticon.com/512/2885/2885417.png", // Shield / VPN
-    "https://cdn-icons-png.flaticon.com/512/1042/1042339.png"  // Media Player
+    "https://cdn-icons-png.flaticon.com/512/1042/1042339.png", // Video
+    "https://cdn-icons-png.flaticon.com/512/3670/3670151.png", // Chat
+    "https://cdn-icons-png.flaticon.com/512/888/888857.png",  // Web Browser
+    "https://cdn-icons-png.flaticon.com/512/1170/1170576.png", // Shopping
+    "https://cdn-icons-png.flaticon.com/512/2991/2991148.png", // Music
+    "https://cdn-icons-png.flaticon.com/512/1828/1828884.png"  // Star / Tools
 ];
 
 const realApps = {
@@ -30,10 +35,9 @@ function generateDatabase() {
         const baseCount = appsDatabase[cat].length;
         
         for (let i = baseCount + 1; i <= 1000; i++) {
-            // Sélection d'une icône : priorité aux vraies apps, sinon rotation dans la liste par défaut
-            let chosenIcon = baseCount > 0 
-                ? appsDatabase[cat][i % baseCount].icon 
-                : defaultIcons[i % defaultIcons.length];
+            // Sélection variée des icônes
+            const randomIconIndex = (i + Math.floor(Math.random() * 5)) % iconBank.length;
+            const chosenIcon = iconBank[randomIconIndex];
 
             appsDatabase[cat].push({
                 id: `${cat}-${i}`,
