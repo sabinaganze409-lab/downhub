@@ -1,5 +1,14 @@
 const appsDatabase = { android: [], windows: [], mac: [], jeux: [], vpn: [] };
 
+// Collection d'icônes par défaut fonctionnelles (logos d'applications neutres)
+const defaultIcons = [
+    "https://cdn-icons-png.flaticon.com/512/300/300221.png", // Google / App
+    "https://cdn-icons-png.flaticon.com/512/732/732208.png", // Game / Controler
+    "https://cdn-icons-png.flaticon.com/512/2099/2099058.png", // Settings / Tool
+    "https://cdn-icons-png.flaticon.com/512/2885/2885417.png", // Shield / VPN
+    "https://cdn-icons-png.flaticon.com/512/1042/1042339.png"  // Media Player
+];
+
 const realApps = {
     android: [
         { id: "wa", name: "WhatsApp Messenger", category: "Communication", rating: 4.5, size: "35 MB", icon: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg", downloadUrl: "https://play.google.com/store/apps/details?id=com.whatsapp", description: "WhatsApp par Meta est une application de messagerie et d'appels vidéo gratuite." },
@@ -9,7 +18,9 @@ const realApps = {
     windows: [
         { id: "vlc", name: "VLC Media Player", category: "Lecteur Vidéo", rating: 4.8, size: "40 MB", icon: "https://upload.wikimedia.org/wikipedia/commons/3/38/VLC_icon.svg", downloadUrl: "https://www.videolan.org/vlc/", description: "Lecteur multimédia gratuit et open-source capable de lire la plupart des formats vidéo." }
     ],
-    mac: [], jeux: [], vpn: []
+    mac: [],
+    jeux: [],
+    vpn: []
 };
 
 function generateDatabase() {
@@ -17,14 +28,20 @@ function generateDatabase() {
     categories.forEach(cat => {
         appsDatabase[cat] = [...(realApps[cat] || [])];
         const baseCount = appsDatabase[cat].length;
+        
         for (let i = baseCount + 1; i <= 1000; i++) {
+            // Sélection d'une icône : priorité aux vraies apps, sinon rotation dans la liste par défaut
+            let chosenIcon = baseCount > 0 
+                ? appsDatabase[cat][i % baseCount].icon 
+                : defaultIcons[i % defaultIcons.length];
+
             appsDatabase[cat].push({
                 id: `${cat}-${i}`,
                 name: `${cat.toUpperCase()} App ${i}`,
-                category: cat === 'jeux' ? 'Jeu Vidéo' : 'Utilitaire',
+                category: cat === 'jeux' ? 'Jeu Vidéo' : (cat === 'vpn' ? 'VPN & Sécurité' : 'Utilitaire'),
                 rating: (3.5 + Math.random() * 1.5).toFixed(1),
                 size: `${Math.floor(Math.random() * 90) + 10} MB`,
-                icon: appsDatabase[cat][i % (baseCount || 1)]?.icon || "",
+                icon: chosenIcon,
                 downloadUrl: "https://google.com",
                 description: `Ceci est une description détaillée pour l'application ${cat.toUpperCase()} App ${i}. Vous pouvez la télécharger directement.`
             });
@@ -36,7 +53,7 @@ let currentCategory = 'all';
 let currentFilteredApps = [];
 let currentPage = 1;
 const appsPerPage = 24;
-const fallbackIcon = "https://cdn-icons-png.flaticon.com/512/2589/2589175.png";
+const fallbackIcon = "https://cdn-icons-png.flaticon.com/512/300/300221.png";
 
 function createAppCard(app) {
     const appData = encodeURIComponent(JSON.stringify(app));
@@ -100,7 +117,6 @@ function handleSearch() {
     filterApps();
 }
 
-/* OUVRIR LA PAGE DE DÉTAIL D'UNE APPLICATION */
 function openDetails(appDataString) {
     const app = JSON.parse(decodeURIComponent(appDataString));
 
@@ -123,13 +139,11 @@ function openDetails(appDataString) {
     window.scrollTo(0, 0);
 }
 
-/* FERMER LA PAGE DE DÉTAIL (RETOUR À L'ACCUEIL) */
 function closeDetails() {
     document.getElementById('details-view').style.display = 'none';
     document.getElementById('home-view').style.display = 'block';
 }
 
-/* FONCTION DE PARTAGE */
 function shareApp(name, url) {
     if (navigator.share) {
         navigator.share({
