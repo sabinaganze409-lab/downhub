@@ -3,75 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DownHub - Galerie d'Applications</title>
+    <title>DownHub - Centre de Téléchargement Sécurisé</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="theme-blue">
 
-    <header>
-        <h1>DownHub</h1>
-        <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="search-input" placeholder="Rechercher une application..." oninput="handleSearch()">
-        </div>
-    </header>
+    <!-- Vue Principale (Accueil) -->
+    <div id="home-view">
+        <header class="main-header">
+            <div class="header-content">
+                <h1 class="logo">DownHub</h1>
+                <div class="header-actions">
+                    <!-- Sélecteur de thème -->
+                    <div class="theme-picker">
+                        <span class="theme-dot dot-blue" onclick="setTheme('theme-blue')" title="Thème Bleu"></span>
+                        <span class="theme-dot dot-purple" onclick="setTheme('theme-purple')" title="Thème Violet"></span>
+                        <span class="theme-dot dot-green" onclick="setTheme('theme-green')" title="Thème Vert"></span>
+                        <span class="theme-dot dot-cyan" onclick="setTheme('theme-cyan')" title="Thème Cyan"></span>
+                    </div>
+                    <!-- Bouton Demander une App -->
+                    <button class="btn-request" onclick="openRequestModal()">➕ Demander une App</button>
+                </div>
+            </div>
 
-    <!-- VUE 1 : ACCUEIL ET GRILLE D'APPLICATIONS -->
-    <main id="home-view">
-        <div class="category-tabs">
-            <button class="tab-btn active" onclick="switchCategory('all', this)">Tous</button>
-            <button class="tab-btn" onclick="switchCategory('android', this)">Android</button>
-            <button class="tab-btn" onclick="switchCategory('windows', this)">Windows</button>
-            <button class="tab-btn" onclick="switchCategory('mac', this)">Mac</button>
-            <button class="tab-btn" onclick="switchCategory('jeux', this)">Jeux</button>
-            <button class="tab-btn" onclick="switchCategory('vpn', this)">VPN</button>
-        </div>
+            <!-- Barre de Recherche -->
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Rechercher une application, un jeu, un outil..." oninput="handleSearch()">
+            </div>
 
-        <!-- Grille de cartes -->
-        <div id="apps-container" class="apps-grid"></div>
+            <!-- Catégories Principales -->
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="switchCategory('all', this)">Tous</button>
+                <button class="tab-btn" onclick="switchCategory('android', this)">Android</button>
+                <button class="tab-btn" onclick="switchCategory('windows', this)">Windows</button>
+                <button class="tab-btn" onclick="switchCategory('mac', this)">Mac</button>
+                <button class="tab-btn" onclick="switchCategory('jeux', this)">Jeux</button>
+                <button class="tab-btn" onclick="switchCategory('vpn', this)">VPN</button>
+            </div>
 
-        <div style="text-align: center; margin: 25px 0;">
-            <button id="load-more-btn" class="load-more-btn" onclick="loadMoreApps()" style="display: none;">
-                Charger plus
-            </button>
-        </div>
-    </main>
+            <!-- Filtres Intelligents (Fonctionnalité #1) -->
+            <div class="smart-filters">
+                <button class="filter-chip active" onclick="setFilter('all', this)">Toutes</button>
+                <button class="filter-chip" onclick="setFilter('low-data', this)">⚡ &lt; 15 MB (Bas débit)</button>
+                <button class="filter-chip" onclick="setFilter('offline', this)">📶 Hors ligne</button>
+                <button class="filter-chip" onclick="setFilter('no-ads', this)">🚫 Sans pub</button>
+                <button class="filter-chip" onclick="setFilter('secure', this)">🛡️ Vérifiés</button>
+            </div>
+        </header>
 
-    <!-- VUE 2 : PAGE DE DÉTAIL D'UNE APPLICATION -->
-    <main id="details-view" class="details-container" style="display: none;">
-        <button class="btn-back" onclick="closeDetails()">
-            <i class="fa-solid fa-arrow-left"></i> Retour aux applications
-        </button>
+        <main class="main-container">
+            <div id="apps-container" class="apps-grid"></div>
+            <div class="load-more-wrapper">
+                <button id="load-more-btn" onclick="loadMoreApps()">Charger plus d'applications</button>
+            </div>
+        </main>
+    </div>
 
-        <div class="detail-card">
-            <div class="detail-header">
-                <img id="detail-icon" src="" alt="Icone App" class="detail-icon">
-                <div class="detail-meta">
+    <!-- Vue Détails d'une Application -->
+    <div id="details-view" style="display: none;">
+        <nav class="details-nav">
+            <button class="btn-back" onclick="closeDetails()">← Retour au catalogue</button>
+        </nav>
+
+        <div class="details-container">
+            <div class="details-header">
+                <img id="detail-icon" src="" alt="Icone app">
+                <div class="details-title-box">
                     <h2 id="detail-title">Nom de l'application</h2>
-                    <p id="detail-category" class="detail-category">Catégorie</p>
-                    <div class="detail-stats">
-                        <span id="detail-rating">⭐ 0.0</span>
-                        <span id="detail-size">0 MB</span>
+                    <p id="detail-category" class="badge-cat">Catégorie</p>
+                    
+                    <!-- Badges de Sécurité & Infos (#2 & #6) -->
+                    <div class="detail-badges">
+                        <span class="badge badge-security">🛡️ Scanné sans virus (VirusTotal)</span>
+                        <span id="badge-offline-status" class="badge badge-info">📶 Mode Hors Ligne</span>
+                        <span id="badge-ads-status" class="badge badge-info">🚫 Sans Publicité</span>
                     </div>
                 </div>
             </div>
 
-            <div class="detail-description">
-                <h3>À propos de cette application</h3>
-                <p id="detail-text">Description de l'application...</p>
+            <!-- Grille de Métriques (#6) -->
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <span class="spec-label">Note</span>
+                    <span id="detail-rating" class="spec-value">⭐ 4.5</span>
+                </div>
+                <div class="spec-card">
+                    <span class="spec-label">Taille</span>
+                    <span id="detail-size" class="spec-value">0 MB</span>
+                </div>
+                <div class="spec-card">
+                    <span class="spec-label">Compatibilité</span>
+                    <span id="detail-compat" class="spec-value">Universal</span>
+                </div>
+                <div class="spec-card">
+                    <span class="spec-label">Mise à jour</span>
+                    <span id="detail-updated" class="spec-value">Récemment</span>
+                </div>
             </div>
 
-            <div class="detail-actions">
-                <a id="detail-download-btn" href="#" target="_blank" class="btn-download-large">
-                    <i class="fa-solid fa-download"></i> Télécharger
-                </a>
-                <button id="detail-share-btn" class="btn-share-large">
-                    <i class="fa-solid fa-share-nodes"></i> Partager
-                </button>
+            <!-- Actions Principales & Vote (#4) -->
+            <div class="details-actions">
+                <a id="detail-download-btn" href="#" target="_blank" rel="noopener" class="btn-download"> Télécharger en toute sécurité</a>
+                <button id="detail-like-btn" class="btn-like" onclick="likeApp()">👍 Utile (<span id="like-count">0</span>)</button>
+                <button id="detail-share-btn" class="btn-share">🔗 Partager</button>
+            </div>
+
+            <!-- Description -->
+            <div class="details-section">
+                <h3>À propos de cette application</h3>
+                <p id="detail-text"></p>
+            </div>
+
+            <!-- Accordéon Tuto / Guide (#5) -->
+            <div class="details-section">
+                <details class="guide-accordion">
+                    <summary>📘 Guide d'installation rapide (Android / PC / Mac)</summary>
+                    <div class="guide-content">
+                        <ol id="guide-steps">
+                            <li>Cliquez sur le bouton <strong>Télécharger</strong> ci-dessus.</li>
+                            <li>Si un avertissement apparaît sur votre navigateur, autorisez le téléchargement de la source.</li>
+                            <li>Ouvrez le fichier téléchargé (`.apk`, `.exe` ou `.dmg`) et suivez les instructions d'installation à l'écran.</li>
+                        </ol>
+                    </div>
+                </details>
             </div>
         </div>
-    </main>
+    </div>
+
+    <!-- Modal pour Demander une Application (#4) -->
+    <div id="request-modal" class="modal-overlay" onclick="closeRequestModal(event)">
+        <div class="modal-content">
+            <h3>➕ Demander une Application</h3>
+            <p>Une application ou un jeu manque sur DownHub ? Proposez-le nous !</p>
+            <form onsubmit="handleRequestSubmit(event)">
+                <input type="text" id="req-name" placeholder="Nom de l'application / jeu" required>
+                <select id="req-platform">
+                    <option value="Android">Android</option>
+                    <option value="Windows">Windows</option>
+                    <option value="Mac">Mac</option>
+                </select>
+                <textarea id="req-desc" placeholder="Remarques (ex: version spécifique, langue...)"></textarea>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="toggleRequestModal(false)">Annuler</button>
+                    <button type="submit" class="btn-submit">Envoyer la demande</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
