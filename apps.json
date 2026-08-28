@@ -1,0 +1,191 @@
+[
+  {
+    "id": 1,
+    "name": "WhatsApp Messenger",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.5",
+    "icon": "https://play-lh.googleusercontent.com/Gqxk4T0uZsDwFp07DE-508hkyvcNmgFuRwPiwTEfF7D7OzGv1FdHDzEyMxNsSBZLOJlGpe3ULvVM2RgrRAlBqA",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.whatsapp?version=latest"
+  },
+  {
+    "id": 2,
+    "name": "Telegram",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.1",
+    "icon": "https://play-lh.googleusercontent.com/PyZ3akMGXPV0tKKirKNwfO--PSQW3FHR6rD_H9mAaukZ8LiHyYFuBLeU8UZ2ok6r5SP79-3prkfybWKh98AZAD0",
+    "downloadUrl": "https://d.apkpure.com/b/APK/org.telegram.messenger?version=latest"
+  },
+  {
+    "id": 3,
+    "name": "Instagram",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.2",
+    "icon": "https://play-lh.googleusercontent.com/yHi59jmO_lVamcyJ1i3rM1_E8bAiAspShnGjjURq05ipQQSUksO3QVEsXTegRSqul038-4YNA7O644XAcx251Q",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.instagram.android?version=latest"
+  },
+  {
+    "id": 4,
+    "name": "TikTok : Vidéos, LIVE, Musique",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.1",
+    "icon": "https://play-lh.googleusercontent.com/2o7iuqPe-0msP3DvNhzoOgNo4eZ6GkL_RtGVeKyBn5UBQAW5cw-GW5V3wDOHB1yTQuqWzrFLFOv2u4_5ea1uhg",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.zhiliaoapp.musically?version=latest"
+  },
+  {
+    "id": 5,
+    "name": "Snapchat",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.4",
+    "icon": "https://play-lh.googleusercontent.com/nOJWJoDAzuRSHmlFfpzHXAj8UbTJwk_JGYf0uAPTKPtiiIX_2Y7r5ATO1ZtxHRqaFTqfIDZ40PnBK4hukeJh",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.snapchat.android?version=latest"
+  },
+  {
+    "id": 6,
+    "name": "Facebook",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.5",
+    "icon": "https://play-lh.googleusercontent.com/12KEJDhgk6oyE1VgmfCuFzFrQripZ_endElbvEhU1rZawQgV3RI-v3II8fDslI1sdC_WKBkmtxS3jxuIihk33Q",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.facebook.katana?version=latest"
+  },
+  {
+    "id": 7,
+    "name": "X (anciennement Twitter)",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.2",
+    "icon": "https://play-lh.googleusercontent.com/IsLsCD4eLC2CYvlkgTI6Z5TROj0BJIBgUF7BZ5eliTzyyTjqG_mbofeG4kw2s7oG_JZMSi5ErLz_qsDi169C8w",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.twitter.android?version=latest"
+  },
+  {
+    "id": 8,
+    "name": "Discord - Chat, Jeux, Détente",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.5",
+    "icon": "https://play-lh.googleusercontent.com/hWM2ymA9U2zFTdbRrAEkowxndSjur3h2wrvp6s5lMYkfpNmhpH4LYU-tWnTkSSuf1qehsYSM5VMrQvd_DwBVFw",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.discord?version=latest"
+  },
+  {
+    "id": 9,
+    "name": "Rakuten Viber Messenger",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.2",
+    "icon": "https://play-lh.googleusercontent.com/iGHZEkEJBBcOyMEETvYrwCXk-eYQ_TaEgBHPKVptKSon4QQHqhD3Zs-tdeINPZucc1sokQ5FJ4ig-YOGh1Lm",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.viber.voip?version=latest"
+  },
+  {
+    "id": 10,
+    "name": "Spotify: Musique & podcasts",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.4",
+    "icon": "https://play-lh.googleusercontent.com/IzQgYCcnCFCD08GR-3bdtcT8xzOvrNkC84avGT5CwTX2VIqmTmKKJcP_Cd4JoBOdmCMlTndlOzV6hrthg2fOWA",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.spotify.music?version=latest"
+  },
+  {
+    "id": 11,
+    "name": "YouTube",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.0",
+    "icon": "https://play-lh.googleusercontent.com/QNmuZQc9I6Zbe3mWnSr0hycnENqGFCI5p3yE29Hkxtf22T0IWS6zTrpxULLyyjWpB7ONAXDsDQXnXcVWokl3eg",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest"
+  },
+  {
+    "id": 12,
+    "name": "Netflix",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.3",
+    "icon": "https://play-lh.googleusercontent.com/fXVS45nukV1x9PYVSKHkCQK0QGCOishIvAOxIZS3sgRem8HS7l9l94_Ggj-WZPrTLePRdNYN4pp4SPAQL7oS0PU",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.netflix.mediaclient?version=latest"
+  },
+  {
+    "id": 13,
+    "name": "VLC for Android",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.0",
+    "icon": "https://play-lh.googleusercontent.com/BG5YwziGHjh0wvWg6VO9c3iprYa3vFww1CnNqPvFszUVxcY4yB29dy7t2jsLwwI4jAqX08_--12FmMxgNG1JFg",
+    "downloadUrl": "https://d.apkpure.com/b/APK/org.videolan.vlc?version=latest"
+  },
+  {
+    "id": 14,
+    "name": "Shazam : musique et concerts",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.8",
+    "icon": "https://play-lh.googleusercontent.com/Ne3g286DhSUmbg75RI5hmJLAFLPZfgIiWVOboDL8Rb08iQAAfqb7CBfwI6eU3rIvI6Kk6B9CySgMUTbh7i42_Q",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.shazam.android?version=latest"
+  },
+  {
+    "id": 15,
+    "name": "Google",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.2",
+    "icon": "https://play-lh.googleusercontent.com/xqk8hd6dMyffxE6iQa59cUt75EA-0YDvjnJlxH4z8W63-e5KwaWXbrNob6Q-OoH5SSDa78Y0I0YA3BB0zDVnB8w",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.google.android.googlequicksearchbox?version=latest"
+  },
+  {
+    "id": 16,
+    "name": "Google Chrome",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.1",
+    "icon": "https://play-lh.googleusercontent.com/gbkzfC3R1fXcGR4Uag1uRSN_123Tpo_KxhVZFLFCatmthFuO1bzPczUomFtxI42YYEQMJeAaZuIFVrTF58gZYg",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.android.chrome?version=latest"
+  },
+  {
+    "id": 17,
+    "name": "Microsoft Word: Edit Documents",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.7",
+    "icon": "https://play-lh.googleusercontent.com/UPPHK323_gvNZWTnmq_lgp_qrSXwdXI8aYNfqNF27MtuujT2YAytdueWIKncRh5YfNB_rfpCBfImzo95iYC1Fw",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.microsoft.office.word?version=latest"
+  },
+  {
+    "id": 18,
+    "name": "Adobe Acrobat Reader pour PDF",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.5",
+    "icon": "https://play-lh.googleusercontent.com/VIohTA3wyJgKJ-SZzoJeYuykxyVFCbSmXFAjefIGQybY57FX44VCHyVa3CTOZROzWLbMc-VFwL4CEDj47LeRpM0",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.adobe.reader?version=latest"
+  },
+  {
+    "id": 19,
+    "name": "Canva: Retouche Photo et Vidéo",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.7",
+    "icon": "https://play-lh.googleusercontent.com/52fzAlhKzDyZV8ttyQ_DHB-jOeLZAZEdKlgXnWL__YNMZuvsoRCshJX5mr_ArFZjK7rte4hqEJ4ucjtuKJK5",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.canva.editor?version=latest"
+  },
+  {
+    "id": 20,
+    "name": "Truecaller: Bloqueur d'appel",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.3",
+    "icon": "https://play-lh.googleusercontent.com/_6uIPrWQnzTLV96QKUVfhH5r8m0K8NRi3WM8WZlBkigXFs2F2RD425EPtvPu66U9RYaDn9o6rq9ALBnvKSCE5A",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.truecaller?version=latest"
+  },
+  {
+    "id": 21,
+    "name": "Free Fire : 9e anniversaire",
+    "category": "Android",
+    "size": "Varie selon appareil",
+    "rating": "4.7",
+    "icon": "https://play-lh.googleusercontent.com/JT88XmsHoGDio7FxONwh382DhuTxuccfMmWFDtRBFjilySzNqWOCxUhqm8IhBKzQSwVrW2HWp_XvSgKFwi3ETA",
+    "downloadUrl": "https://d.apkpure.com/b/APK/com.dts.freefireth?version=latest"
+  }
+]
