@@ -3,270 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DownHub — Store APK & Games N°1</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --bg-dark: #0b0f19;
-      --card-bg: rgba(22, 31, 50, 0.75);
-      --accent: #38bdf8;
-      --accent-hover: #0284c7;
-      --fire: #f97316;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #1e293b;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-    body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 60px; }
-
-    header {
-      background: linear-gradient(180deg, #1e1b4b 0%, var(--bg-dark) 100%);
-      padding: 30px 20px 20px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .logo { font-size: 2.8rem; font-weight: 900; color: #fff; letter-spacing: -1px; margin-bottom: 6px; }
-    .logo span { color: var(--accent); }
-    header p { color: var(--text-muted); font-size: 1rem; margin-bottom: 20px; }
-
-    .search-box { position: relative; max-width: 550px; margin: 0 auto; }
-    .search-box input {
-      width: 100%; padding: 16px 20px 16px 50px; border-radius: 50px;
-      border: 2px solid var(--border); background: rgba(22, 31, 50, 0.9);
-      color: #fff; font-size: 1rem; outline: none; transition: all 0.3s;
-    }
-    .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
-    .search-box i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-    /* Section Application à la Une */
-    .featured-section { margin: 30px 0; }
-    .section-header { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 15px; }
-    .section-header i.fa-fire { color: var(--fire); }
-
-    .featured-banner {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      border: 1px solid var(--accent); border-radius: 24px; padding: 25px;
-      display: flex; align-items: center; gap: 25px; position: relative; overflow: hidden;
-    }
-    .featured-banner img { width: 100px; height: 100px; border-radius: 22px; object-fit: cover; }
-    .featured-info { flex: 1; }
-    .featured-info h2 { font-size: 1.6rem; margin-bottom: 6px; color: #fff; }
-    .featured-info p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
-    .featured-meta { display: flex; gap: 15px; font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 15px; }
-
-    /* Categories */
-    .categories { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 30px 0; }
-    .cat-btn {
-      background: rgba(22, 31, 50, 0.8); border: 1px solid var(--border); color: var(--text-muted);
-      padding: 10px 22px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-    }
-    .cat-btn:hover, .cat-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
-
-    /* Grille des applications */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-
-    /* Carte Application */
-    .card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px;
-      padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center;
-      position: relative; transition: all 0.3s ease;
-    }
-    .card:hover { transform: translateY(-5px); border-color: var(--accent); }
-    .card-badge { position: absolute; top: 12px; right: 12px; background: rgba(56, 189, 248, 0.1); color: var(--accent); font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: 700; }
-    .card img { width: 75px; height: 75px; border-radius: 18px; object-fit: cover; margin-bottom: 12px; }
-    .card h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
-    .card-meta { display: flex; gap: 12px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
-    
-    /* Bouton Télécharger */
-    .btn-download {
-      width: 100%; padding: 10px; background: var(--accent); color: #0b0f19;
-      text-decoration: none; border-radius: 12px; font-weight: 700; display: flex;
-      align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;
-    }
-
-    /* Barre d'outils interactive (Partage & Commentaires) */
-    .card-actions {
-      display: flex; justify-content: space-between; width: 100%; padding-top: 10px;
-      border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted);
-    }
-    .action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
-    .action-btn:hover { color: var(--accent); }
-    .action-btn.report:hover { color: #ef4444; }
-
-    /* Fenêtre Modale (Commentaires) */
-    .modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
-    }
-    .modal-content {
-      background: #161f32; padding: 25px; border-radius: 20px; max-width: 450px; width: 90%;
-      border: 1px solid var(--border); position: relative;
-    }
-    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
-    .comment-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: #0b0f19; color: #fff; margin: 10px 0; }
-    .send-comment-btn { background: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-  </style>
+  <title>DownHub - Téléchargement d'APK Gratuits & Sûrs</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Header / Navigation -->
   <header>
-    <div class="logo">Down<span>Hub</span></div>
-    <p>Téléchargement APK Direct, Rapide & 100% Sécurisé</p>
-    
-    <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="searchInput" placeholder="Rechercher une application...">
+    <div class="header-container">
+      <a href="#" class="logo">DownHub</a>
+      <input type="text" id="searchInput" placeholder="Rechercher des jeux, applications..." style="padding: 8px 16px; border-radius: 20px; border: 1px solid #ccc; width: 300px;">
     </div>
   </header>
 
-  <div class="container">
+  <!-- Main Content Layout -->
+  <div class="main-wrapper">
     
-    <section class="featured-section">
-      <div class="section-header"><i class="fa-solid fa-fire"></i> Application du jour</div>
-      <div class="featured-banner" id="featuredBanner"></div>
-    </section>
-
-    <div class="categories">
-      <button class="cat-btn active" onclick="filterApps('Tous')">Tous</button>
-      <button class="cat-btn" onclick="filterApps('Android')">Android</button>
-      <button class="cat-btn" onclick="filterApps('Jeux')">Jeux</button>
-      <button class="cat-btn" onclick="filterApps('VPN')">VPN</button>
-      <button class="cat-btn" onclick="filterApps('Outils')">Outils</button>
-    </div>
-
-    <div class="section-header"><i class="fa-solid fa-layer-group"></i> Catalogue Complet</div>
-    <main class="grid" id="appsGrid"></main>
-
-  </div>
-
-  <!-- Fenêtre Modale de Commentaires -->
-  <div class="modal" id="commentModal">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeModal()">&times;</span>
-      <h3 id="modalAppName">Commentaires</h3>
-      <div id="commentsList" style="margin: 15px 0; max-height: 200px; overflow-y: auto; text-align: left; font-size: 0.9rem;">
-        <p style="color: var(--text-muted);">Aucun commentaire pour l'instant. Soyez le premier !</p>
-      </div>
-      <textarea id="newComment" class="comment-input" rows="3" placeholder="Laissez votre avis..."></textarea>
-      <button class="send-comment-btn" onclick="addComment()">Publier</button>
-    </div>
-  </div>
-
-  <script>
-    let allApps = [];
-    let currentAppId = null;
-
-    async function loadApps() {
-      try {
-        const response = await fetch('apps.json');
-        allApps = await response.json();
-        if (allApps.length > 0) renderFeatured(allApps[0]);
-        renderApps(allApps);
-      } catch (error) {
-        console.error("Erreur de chargement :", error);
-      }
-    }
-
-    function renderFeatured(app) {
-      document.getElementById('featuredBanner').innerHTML = `
-        <img src="${app.icon}" alt="${app.name}" onerror="this.src='https://via.placeholder.com/100/1e293b/38bdf8?text=APK'">
-        <div class="featured-info">
-          <h2>${app.name}</h2>
-          <p>Version mise à jour avec téléchargement direct sans attente.</p>
-          <div class="featured-meta">
-            <span>★ ${app.rating}</span>
-            <span><i class="fa-solid fa-download"></i> 15K+ téléch.</span>
-          </div>
-          <a href="${app.downloadUrl}" class="btn-download" style="max-width: 220px;" download>
-            <i class="fa-solid fa-download"></i> Télécharger APK
-          </a>
+    <!-- Colonne Gauche (70%) -->
+    <main>
+      <!-- Hero Banner (Application à la une) -->
+      <div class="hero-banner">
+        <div class="hero-info">
+          <h2>Ragdoll Playground</h2>
+          <p>Jeu d'action sandbox physique ultra populaire !</p>
+          <a href="#" class="btn-download">Télécharger v3.20 (25 MB)</a>
         </div>
-      `;
-    }
+      </div>
 
-    function renderApps(apps) {
-      const grid = document.getElementById('appsGrid');
-      grid.innerHTML = '';
+      <!-- Section Grille d'applications -->
+      <div class="section-title">Découvrir les Applications</div>
+      <div class="apps-grid" id="appsGrid">
+        <!-- Rempli dynamiquement par JS -->
+      </div>
+    </main>
 
-      apps.forEach(app => {
-        const downloads = Math.floor(Math.random() * 8000) + 1200; // Génération d'un compteur réaliste
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <span class="card-badge">${app.category || 'Android'}</span>
-          <img src="${app.icon}" alt="${app.name}" onerror="this.src='https://via.placeholder.com/100/1e293b/38bdf8?text=APK'">
-          <h3>${app.name}</h3>
-          <div class="card-meta">
-            <span>★ ${app.rating}</span>
-            <span><i class="fa-solid fa-download"></i> ${downloads}</span>
-          </div>
-          <a href="${app.downloadUrl}" class="btn-download" download>
-            <i class="fa-solid fa-download"></i> Télécharger
-          </a>
-          <div class="card-actions">
-            <button class="action-btn" onclick="shareApp('${app.name}', '${app.downloadUrl}')"><i class="fa-solid fa-share-nodes"></i> Partager</button>
-            <button class="action-btn" onclick="openComments(${app.id}, '${app.name}')"><i class="fa-solid fa-comment"></i> Avis</button>
-            <button class="action-btn report" onclick="reportLink('${app.name}')"><i class="fa-solid fa-triangle-exclamation"></i> Signaler</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
+    <!-- Barre Latérale Droite (30%) -->
+    <aside>
+      <!-- Recherches tendance -->
+      <div class="sidebar-box">
+        <h3>Recherches Tendance</h3>
+        <div class="trending-tags">
+          <a href="#" class="tag">Free Fire</a>
+          <a href="#" class="tag">WhatsApp</a>
+          <a href="#" class="tag">GTA San Andreas</a>
+          <a href="#" class="tag">CapCut</a>
+          <a href="#" class="tag">eFootball 2026</a>
+        </div>
+      </div>
 
-    // Fonction Partager
-    function shareApp(name, url) {
-      if (navigator.share) {
-        navigator.share({ title: `Télécharger ${name} sur DownHub`, url: window.location.href });
-      } else {
-        navigator.clipboard.writeText(window.location.href);
-        alert(`Lien de DownHub copié dans le presse-papier ! Partagez-le avec vos amis.`);
-      }
-    }
+      <!-- Application VIP / DownHub VPN -->
+      <div class="sidebar-box" style="border: 2px solid var(--primary-color);">
+        <h3>DownHub VPN (Offert)</h3>
+        <p style="font-size: 13px; color: #666;">Accès Internet sécurisé et fluide. Application officielle DownHub.</p>
+        <button class="btn-download" style="width: 100%;">Obtenir l'APK</button>
+      </div>
+    </aside>
 
-    // Gestion des Commentaires (Modale)
-    function openComments(id, name) {
-      currentAppId = id;
-      document.getElementById('modalAppName').innerText = `Avis : ${name}`;
-      document.getElementById('commentModal').style.display = 'flex';
-    }
+  </div>
 
-    function closeModal() {
-      document.getElementById('commentModal').style.display = 'none';
-    }
-
-    function addComment() {
-      const text = document.getElementById('newComment').value;
-      if (!text.trim()) return;
-      const list = document.getElementById('commentsList');
-      if (list.querySelector('p')) list.innerHTML = '';
-      
-      const p = document.createElement('p');
-      p.style.marginBottom = "8px";
-      p.innerHTML = `<strong>Visiteur :</strong> ${text}`;
-      list.appendChild(p);
-      document.getElementById('newComment').value = '';
-    }
-
-    // Signaler un lien mort
-    function reportLink(name) {
-      alert(`Merci ! Le lien pour "${name}" a été signalé. Nous allons le vérifier.`);
-    }
-
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      renderApps(allApps.filter(a => a.name.toLowerCase().includes(query)));
-    });
-
-    function filterApps(category) {
-      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      renderApps(category === 'Tous' ? allApps : allApps.filter(a => a.category === category));
-    }
-
-    loadApps();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
