@@ -1,29 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("appsGrid");
 
-  // Chargement dynamique de votre fichier JSON
   fetch("apps.json")
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Erreur de chargement du fichier JSON");
-      }
-      return response.json();
-    })
+    .then(res => res.json())
     .then(appsData => {
-      if (grid && Array.isArray(appsData)) {
-        // Affichage des applications dans la grille
-        grid.innerHTML = appsData.map(app => `
+      if (!grid || !Array.isArray(appsData)) return;
+
+      grid.innerHTML = appsData.map(app => {
+        // Détection automatique du nom
+        const title = app.name || app.nom || app.title || app.appName || app.titre || "Application";
+
+        // Détection automatique de l'icône / image
+        const icon = app.icon || app.icone || app.image || app.iconUrl || app.img || app.logo || "";
+
+        // Détection de la catégorie, note et lien
+        const category = app.category || app.categorie || app.type || "App";
+        const rating = app.rating || app.note || "4.5";
+        const link = app.downloadUrl || app.link || app.url || "#";
+
+        return `
           <div class="app-card">
-            <img src="${app.icon || app.image || 'https://via.placeholder.com/72'}" alt="${app.name || app.title}">
-            <h4>${app.name || app.title}</h4>
-            <div class="app-meta">${app.category || 'Application'}</div>
-            <div class="app-rating">★ ${app.rating || '4.5'}</div>
-            <a href="${app.downloadUrl || app.link || '#'}" class="btn-download" style="width: 100%; font-size: 12px; padding: 6px 0;">Installer</a>
+            <img src="${icon}" alt="${title}" onerror="this.src='https://via.placeholder.com/72'">
+            <h4>${title}</h4>
+            <div class="app-meta">${category}</div>
+            <div class="app-rating">★ ${rating}</div>
+            <a href="${link}" class="btn-download" style="width: 100%; font-size: 12px; padding: 6px 0;">Installer</a>
           </div>
-        `).join("");
-      }
+        `;
+      }).join("");
     })
-    .catch(error => {
-      console.error("Impossible de charger les applications :", error);
-    });
+    .catch(err => console.error("Erreur JSON:", err));
 });
