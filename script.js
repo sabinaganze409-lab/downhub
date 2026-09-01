@@ -1,134 +1,150 @@
+// --- VARIABLES GLOBALES ---
 let allApps = [];
 let filteredApps = [];
-let currentPage = 1;
-let isLoading = false;
+let displayedCount = 0;
 const APPS_PER_PAGE = 24;
-const FALLBACK_ICON = "https://cdn-icons-png.flaticon.com/512/2589/2589175.png";
 
+// --- INITIALISATION AU CHARGEMENT ---
 document.addEventListener("DOMContentLoaded", () => {
   fetchAppsData();
-  setupInfiniteScroll();
+  setupEventListeners();
 });
 
-function fetchAppsData() {
-  fetch("apps.json")
-    .then(res => {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return res.json();
-    })
-    .then(data => {
-      allApps = data;
-      filteredApps = data;
-      renderAppsGrid(true);
-    })
-    .catch(err => {
-      console.error("DownHub fetch error:", err);
-      const container = document.getElementById("apps-container");
-      if (container) {
-        container.innerHTML = `<p style="color:#ef4444; grid-column:1/-1;">Erreur de chargement de apps.json</p>`;
-      }
+// --- CHARGEMENT DES DONNÉES JSON ---
+async function fetchAppsData() {
+  try {
+    const response = await fetch("apps.json");
+    if (!response.ok) throw new Error("Erreur de chargement des applications");
+    
+    allApps = await response.json();
+    filteredApps = [...allApps];
+    
+    renderAppsGrid(true);
+  } catch (error) {
+    console.error("❌ Erreur :", error);
+    const container = document.getElementById("apps-grid");
+    if (container) {
+      container.innerHTML = `<p class="error-msg">Impossible de charger le catalogue d'applications.</p>`;
+    }
+  }
+}
+
+// --- ÉCOUTEURS D'ÉVÉNEMENTS ---
+function setupEventListeners() {
+  // Recherche en temps réel
+  const searchInput = document.getElementById("search-input");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      filterAppsBySearch(query);
     });
-}
-
-function createAppCard(app) {
-  const safeTitle = app.name || app.title || "Application";
-  const safeCategory = app.category || app.categorie || "App";
-  const safeRating = app.rating || "4.5";
-  const safeIcon = (app.icon && app.icon.startsWith("http")) ? app.icon : FALLBACK_ICON;
-  const safeUrl = app.downloadUrl || app.link || "#";
-
-  const appDataString = encodeURIComponent(JSON.stringify(app));
-
-  return `
-    <div class="app-card">
-      <div onclick="openDetails('${appDataString}')" style="cursor: pointer; width: 100%;">
-        <img src="${safeIcon}" alt="${safeTitle}" onerror="this.onerror=null; this.src='${FALLBACK_ICON}';">
-        <h4>${safeTitle}</h4>
-        <div class="app-meta">${safeCategory}</div>
-        <div class="app-rating">★ ${safeRating}</div>
-      </div>
-      <a href="${safeUrl}" download="${safeTitle}.apk" class="btn-download">Télécharger</a>
-    </div>
-  `;
-}
-
-function renderAppsGrid(reset = false) {
-  const container = document.getElementById("apps-container");
-  if (!container) return;
-
-  if (reset) {
-    currentPage = 1;
-    container.innerHTML = "";
   }
 
-  const startIndex = (currentPage - 1) * APPS_PER_PAGE;
-  const endIndex = currentPage * APPS_PER_PAGE;
-  const pageItems = filteredApps.slice(startIndex, endIndex);
-
-  if (pageItems.length === 0 && reset) {
-    container.innerHTML = `<p style="color:#94a3b8; grid-column:1/-1;">Aucune application trouvée.</p>`;
-    return;
-  }
-
-  const cardsHtml = pageItems.map(app => createAppCard(app)).join("");
-  container.insertAdjacentHTML("beforeend", cardsHtml);
-  isLoading = false;
-}
-
-function setupInfiniteScroll() {
+  // Défilement infini (Infinite Scroll)
   window.addEventListener("scroll", () => {
-    if (isLoading) return;
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-      const maxPages = Math.ceil(filteredApps.length / APPS_PER_PAGE);
-      if (currentPage < maxPages) {
-        isLoading = true;
-        currentPage++;
-        renderAppsGrid(false);
-      }
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+      renderAppsGrid(false);
     }
   });
 }
 
-function handleSearch() {
-  const query = document.getElementById("search-input").value.toLowerCase().trim();
-  filteredApps = allApps.filter(app => {
-    const title = (app.name || app.title || "").toLowerCase();
-    const cat = (app.category || app.categorie || "").toLowerCase();
-    return title.includes(query) || cat.includes(query);
-  });
-  renderAppsGrid(true);
-}
-
+// --- FILTRAGE PAR CATEGORIE ---
 function switchCategory(categoryKey, btnElement) {
+  // Mise à jour visuelle des boutons
   document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
   if (btnElement) btnElement.classList.add("active");
 
-  if (categoryKey === "all" || categoryKey === "Tous") {
-    filteredApps = allApps;
+  const key = categoryKey.toLowerCase();
+
+  if (key === "all" || key === "tous") {
+    filteredApps = [...allApps];
+  } else if (key === "jeux" || key === "games") {
+    filteredApps = allApps.filter(app => {
+      const cat = (app.category || "").toLowerCase();
+      return cat.includes("game") || cat.includes("jeu") || cat.includes("action") || cat.includes("arcade");
+    });
+  } else if (key === "vpn") {
+    filteredApps = allApps.filter(app => {
+      const cat = (app.category || "").toLowerCase();
+      const name = (app.name || "").toLowerCase();
+      const desc = (app.description || "").toLowerCase();
+      return cat.includes("vpn") || name.includes("vpn") || desc.includes("vpn") || cat.includes("utilit");
+    });
+  } else if (key === "outils" || key === "tools") {
+    filteredApps = allApps.filter(app => {
+      const cat = (app.category || "").toLowerCase();
+      return cat.includes("utilit") || cat.includes("productiv") || cat.includes("tool");
+    });
+  } else if (key === "social") {
+    filteredApps = allApps.filter(app => {
+      const cat = (app.category || "").toLowerCase();
+      return cat.includes("social") || cat.includes("messag") || cat.includes("réseau");
+    });
+  } else {
+    // Filtrage générique par mot-clé
+    filteredApps = allApps.filter(app => {
+      const cat = (app.category || "").toLowerCase();
+      return cat.includes(key);
+    });
+  }
+
+  renderAppsGrid(true);
+}
+
+// --- FILTRAGE PAR RECHERCHE ---
+function filterAppsBySearch(query) {
+  if (!query) {
+    filteredApps = [...allApps];
   } else {
     filteredApps = allApps.filter(app => {
-      const cat = (app.category || app.categorie || "").toLowerCase();
-      return cat.includes(categoryKey.toLowerCase());
+      const name = (app.name || "").toLowerCase();
+      const cat = (app.category || "").toLowerCase();
+      return name.includes(query) || cat.includes(query);
     });
   }
   renderAppsGrid(true);
 }
 
-function openDetails(appDataString) {
-  const app = JSON.parse(decodeURIComponent(appDataString));
-  document.getElementById("detail-icon").src = app.icon || FALLBACK_ICON;
-  document.getElementById("detail-title").innerText = app.name || "App";
-  document.getElementById("detail-category").innerText = app.category || "App";
-  document.getElementById("detail-rating").innerText = `★ ${app.rating || '4.5'}`;
-  document.getElementById("detail-text").innerText = app.description || "Aucune description.";
-  document.getElementById("detail-download-btn").href = app.downloadUrl || "#";
+// --- AFFICHAGE ET RENDU DANS LA GRILLE ---
+function renderAppsGrid(reset = false) {
+  const container = document.getElementById("apps-grid");
+  if (!container) return;
 
-  document.getElementById("home-view").style.display = "none";
-  document.getElementById("details-view").style.display = "block";
-  window.scrollTo(0, 0);
-}
+  if (reset) {
+    container.innerHTML = "";
+    displayedCount = 0;
+  }
 
-function closeDetails() {
-  document.getElementById("details-view").style.display = "none";
-  document.getElementById("home-view").style.display = "grid";
+  if (filteredApps.length === 0) {
+    container.innerHTML = `<p class="no-results">Aucune application trouvée.</p>`;
+    return;
+  }
+
+  const nextBatch = filteredApps.slice(displayedCount, displayedCount + APPS_PER_PAGE);
+
+  nextBatch.forEach(app => {
+    const card = document.createElement("div");
+    card.className = "app-card";
+    
+    card.innerHTML = `
+      <div class="app-icon-wrapper">
+        <img src="${app.icon}" alt="${app.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/100?text=APK'">
+      </div>
+      <div class="app-info">
+        <h3 class="app-title" title="${app.name}">${app.name}</h3>
+        <p class="app-category">${app.category}</p>
+        <div class="app-meta">
+          <span class="app-rating">⭐ ${app.rating}</span>
+          <span class="app-size">💾 ${app.size}</span>
+        </div>
+        <a href="${app.downloadUrl}" class="download-btn" target="_blank" rel="noopener noreferrer">
+          Télécharger
+        </a>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  displayedCount += nextBatch.length;
 }
