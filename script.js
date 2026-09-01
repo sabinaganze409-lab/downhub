@@ -50,7 +50,6 @@ function setupEventListeners() {
 
 // --- FILTRAGE PAR CATEGORIE ---
 function switchCategory(categoryKey, btnElement) {
-  // Mise à jour visuelle des boutons
   document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
   if (btnElement) btnElement.classList.add("active");
 
@@ -81,7 +80,6 @@ function switchCategory(categoryKey, btnElement) {
       return cat.includes("social") || cat.includes("messag") || cat.includes("réseau");
     });
   } else {
-    // Filtrage générique par mot-clé
     filteredApps = allApps.filter(app => {
       const cat = (app.category || "").toLowerCase();
       return cat.includes(key);
