@@ -3,85 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DownHub - Téléchargement d'applications APK</title>
+  <title>DownHub - Téléchargement d'applications Android gratuit</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Header / Navbar -->
-  <header>
-    <a href="#" class="logo">Down<span>Hub</span></a>
-    <div class="search-bar">
-      <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Rechercher des jeux, applications...">
+  <!-- EN-TÊTE / NAVBAR -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="logo-down">Down</span><span class="logo-hub">Hub</span>
+    </div>
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Rechercher des jeux, applications...">
     </div>
   </header>
 
-  <!-- Contenu Principal -->
-  <main id="home-view" class="container">
-    <div class="main-content">
-      
-      <!-- Hero Banner -->
-      <div class="hero-card">
-        <div class="hero-content">
-          <span class="badge-featured">À LA UNE</span>
-          <h2>Ragdoll Playground</h2>
-          <p>Jeu d'action sandbox physique ultra populaire ! Nouveaux objets disponibles.</p>
-          <a href="#" class="btn-hero">Télécharger v3.20 (25 MB)</a>
+  <main class="main-content">
+    
+    <!-- SECTION VEDETTE & TENDANCES -->
+    <section class="hero-section">
+      <div class="featured-card">
+        <span class="badge-featured">À LA UNE</span>
+        <h1 class="featured-title">Ragdoll Playground</h1>
+        <p class="featured-desc">Jeu d'action sandbox physique ultra populaire ! Nouveaux objets disponibles.</p>
+        <button class="featured-btn">Télécharger v3.20 (25 MB)</button>
+      </div>
+
+      <div class="sidebar-cards">
+        <div class="trending-card">
+          <h3>Recherches Tendance</h3>
+          <div class="trending-tags">
+            <span class="tag" onclick="filterAppsBySearch('Free Fire')">Free Fire</span>
+            <span class="tag" onclick="filterAppsBySearch('WhatsApp')">WhatsApp</span>
+            <span class="tag" onclick="filterAppsBySearch('GTA')">GTA San Andreas</span>
+            <span class="tag" onclick="filterAppsBySearch('CapCut')">CapCut</span>
+          </div>
+        </div>
+
+        <div class="promo-card">
+          <h3>DownHub VPN (Offert)</h3>
+          <p>Accès Internet sécurisé et fluide. Application officielle.</p>
+          <button class="promo-btn" onclick="switchCategory('vpn')">Obtenir l'APK</button>
         </div>
       </div>
+    </section>
 
-      <!-- Onglets Catégories -->
-      <div class="category-tabs">
-        <button class="tab-btn active" onclick="switchCategory('all', this)">Tous</button>
-        <button class="tab-btn" onclick="switchCategory('Android', this)">Android</button>
-        <button class="tab-btn" onclick="switchCategory('Jeux', this)">Jeux</button>
-        <button class="tab-btn" onclick="switchCategory('VPN', this)">VPN</button>
-        <button class="tab-btn" onclick="switchCategory('Outils', this)">Outils</button>
+    <!-- BOUTONS DE CATÉGORIES -->
+    <section class="category-tabs">
+      <button class="tab-btn active" onclick="switchCategory('all', this)">Tous</button>
+      <button class="tab-btn" onclick="switchCategory('android', this)">Android</button>
+      <button class="tab-btn" onclick="switchCategory('jeux', this)">Jeux</button>
+      <button class="tab-btn" onclick="switchCategory('vpn', this)">VPN</button>
+      <button class="tab-btn" onclick="switchCategory('outils', this)">Outils</button>
+    </section>
+
+    <!-- GRILLE D'APPLICATIONS -->
+    <section class="catalog-section">
+      <h2 class="section-title">Découvrir les Applications</h2>
+      <div id="apps-grid" class="apps-grid">
+        <!-- Les applications chargées par script.js s'afficheront ici -->
       </div>
+    </section>
 
-      <!-- Section Grille Applications -->
-      <section class="apps-section">
-        <h3 class="section-title">Découvrir les Applications</h3>
-        <div id="apps-container" class="apps-grid"></div>
-      </section>
-    </div>
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-box">
-        <h4>Recherches Tendance</h4>
-        <div class="tags-container">
-          <span class="tag" onclick="document.getElementById('search-input').value='Free Fire'; handleSearch();">Free Fire</span>
-          <span class="tag" onclick="document.getElementById('search-input').value='WhatsApp'; handleSearch();">WhatsApp</span>
-          <span class="tag" onclick="document.getElementById('search-input').value='GTA'; handleSearch();">GTA San Andreas</span>
-          <span class="tag" onclick="document.getElementById('search-input').value='CapCut'; handleSearch();">CapCut</span>
-        </div>
-      </div>
-
-      <div class="sidebar-box vpn-box">
-        <h4>DownHub VPN (Offert)</h4>
-        <p style="font-size: 0.8rem; color: #94a3b8; margin: 8px 0;">Accès Internet sécurisé et fluide. Application officielle.</p>
-        <a href="#" class="btn-download" style="display: block; text-align: center;">Obtenir l'APK</a>
-      </div>
-    </aside>
   </main>
-
-  <!-- Vue Détails (masquée par défaut) -->
-  <div id="details-view" style="display: none; max-width: 800px; margin: 30px auto; padding: 20px;">
-    <button onclick="closeDetails()" style="background: #1e283d; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; margin-bottom: 20px;">← Retour</button>
-    <div style="background: #151c2c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-      <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px;">
-        <img id="detail-icon" src="" style="width: 80px; height: 80px; border-radius: 16px;">
-        <div>
-          <h2 id="detail-title" style="color: #fff;"></h2>
-          <p id="detail-category" style="color: #94a3b8;"></p>
-          <span id="detail-rating" style="color: #ffb703;"></span>
-        </div>
-      </div>
-      <p id="detail-text" style="color: #cbd5e1; margin-bottom: 24px;"></p>
-      <a id="detail-download-btn" href="#" download class="btn-hero" style="display: inline-block; text-align: center; text-decoration: none;">Télécharger APK Direct</a>
-    </div>
-  </div>
 
   <script src="script.js"></script>
 </body>
