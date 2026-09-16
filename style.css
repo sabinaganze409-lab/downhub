@@ -1,249 +1,101 @@
-/* --- RESET & BASICS --- */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: #0b0e14;
-  color: #ffffff;
-  padding-bottom: 50px;
-}
-
-/* --- NAVBAR --- */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 5%;
-  background-color: #121824;
-  border-bottom: 1px solid #1e2638;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.logo-down { color: #ffffff; }
-.logo-hub { color: #00e676; }
-
-.search-box input {
-  background-color: #1a2232;
-  border: 1px solid #2a354d;
-  padding: 8px 16px;
-  border-radius: 20px;
-  color: #fff;
-  width: 100%;
-  max-width: 280px;
-  outline: none;
-}
-
-/* --- MAIN CONTENT --- */
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 15px;
-}
-
-/* --- HERO SECTION --- */
-.hero-section {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-@media (max-width: 768px) {
-  .hero-section {
-    grid-template-columns: 1fr;
-  }
-}
-
-.featured-card {
-  background: linear-gradient(135deg, #151d2a 0%, #0d131d 100%);
-  border: 1px solid #222d42;
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.badge-featured {
-  background-color: rgba(0, 230, 118, 0.15);
-  color: #00e676;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.featured-title { font-size: 22px; margin: 10px 0 6px; }
-.featured-desc { color: #94a3b8; font-size: 13px; margin-bottom: 15px; }
-
-.featured-btn, .promo-btn {
-  background-color: #00e676;
-  color: #000;
-  font-weight: 700;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.sidebar-cards {
+  background-color: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
-.trending-card, .promo-card {
-  background-color: #121824;
-  border: 1px solid #1e2638;
-  border-radius: 14px;
-  padding: 15px;
+header {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-bottom: 1px solid #334155;
 }
 
-.trending-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 10px;
+header h1 {
+  font-size: 2.5rem;
+  color: #38bdf8;
 }
 
-.tag {
-  background-color: #1a2232;
-  border: 1px solid #2a354d;
-  color: #cbd5e1;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 11px;
-  cursor: pointer;
-}
-
-/* --- CATEGORIES --- */
-.category-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 25px;
-  overflow-x: auto;
-  padding-bottom: 5px;
-}
-
-.tab-btn {
-  background-color: #121824;
-  border: 1px solid #1e2638;
+header p {
   color: #94a3b8;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
+  margin-top: 0.5rem;
 }
 
-.tab-btn.active {
-  background-color: #00e676;
-  color: #000;
-  border-color: #00e676;
-}
-
-/* --- GRILLE DE CARTES (CORRIGÉE SANS CHEVAUCHEMENT) --- */
-.section-title {
-  font-size: 18px;
-  margin-bottom: 15px;
+.container {
+  flex: 1;
+  max-width: 1000px;
+  width: 90%;
+  margin: 2rem auto;
 }
 
 .apps-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 15px;
-  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 .app-card {
-  background-color: #121824;
-  border: 1px solid #1e2638;
-  border-radius: 14px;
-  padding: 12px;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.app-card:hover {
+  transform: translateY(-4px);
+  border-color: #38bdf8;
+}
+
+.app-icon {
+  font-size: 3rem;
   text-align: center;
-  width: 100%;
-  box-sizing: border-box;
 }
 
-.app-icon-wrapper img {
-  width: 64px;
-  height: 64px;
-  border-radius: 14px;
-  object-fit: cover;
-  margin-bottom: 8px;
+.app-info h3 {
+  color: #f8fafc;
+  font-size: 1.25rem;
 }
 
-.app-info {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.app-info .category {
+  font-size: 0.85rem;
+  color: #38bdf8;
+  margin-bottom: 0.5rem;
 }
 
-.app-title {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 2px;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.app-category {
-  font-size: 11px;
-  color: #64748b;
-  margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-}
-
-.app-meta {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-size: 10px;
+.app-info .description {
+  font-size: 0.9rem;
   color: #94a3b8;
-  margin-bottom: 10px;
+  line-height: 1.4;
+  margin-bottom: 1rem;
 }
 
-.download-btn {
-  background-color: #1a2232;
-  color: #00e676;
-  border: 1px solid #00e676;
-  width: 100%;
-  padding: 6px 0;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 600;
-  display: block;
-  box-sizing: border-box;
+.badge-dev {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #334155;
+  color: #fbbf24;
+  font-size: 0.8rem;
+  border-radius: 20px;
+  font-weight: bold;
 }
 
-.download-btn:hover {
-  background-color: #00e676;
-  color: #000;
-}
-
-/* ADAPTATION SMARTPHONE (ANDROID) */
-@media (max-width: 480px) {
-  .apps-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid #334155;
+  color: #64748b;
+  font-size: 0.85rem;
 }
