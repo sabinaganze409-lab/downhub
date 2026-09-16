@@ -4,7 +4,6 @@
   --card-border: rgba(255, 255, 255, 0.08);
   --accent-blue: #38bdf8;
   --accent-purple: #818cf8;
-  --accent-glow: rgba(56, 189, 248, 0.15);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --font-family: 'Plus Jakarta Sans', sans-serif;
@@ -23,47 +22,39 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow-x: hidden;
 }
 
-/* Lueurs d'arrière-plan */
 .bg-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(100px);
   z-index: -1;
   pointer-events: none;
 }
 
 .bg-glow-1 {
-  width: 450px;
-  height: 450px;
+  width: 300px;
+  height: 300px;
   background: rgba(56, 189, 248, 0.12);
-  top: -100px;
-  left: -100px;
+  top: -50px;
+  left: -50px;
 }
 
 .bg-glow-2 {
-  width: 550px;
-  height: 550px;
+  width: 300px;
+  height: 300px;
   background: rgba(129, 140, 248, 0.1);
-  bottom: -100px;
-  right: -100px;
+  bottom: 0;
+  right: -50px;
 }
 
-/* Section Hero avec Image d'arrière-plan captivante */
+/* En-tête Réduit */
 .hero-section {
   position: relative;
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 2rem 1rem 1.5rem;
   text-align: center;
-  padding: 4rem 1.5rem;
-  background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+  background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
   border-bottom: 1px solid var(--card-border);
-  overflow: hidden;
 }
 
 .hero-overlay {
@@ -72,209 +63,157 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    180deg, 
-    rgba(9, 13, 22, 0.65) 0%, 
-    rgba(9, 13, 22, 0.98) 100%
-  );
+  background: linear-gradient(180deg, rgba(9, 13, 22, 0.7) 0%, rgba(9, 13, 22, 0.98) 100%);
   z-index: 1;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--card-border);
-  padding: 0.6rem 1.4rem;
+  padding: 0.4rem 1rem;
   border-radius: 99px;
-  backdrop-filter: blur(12px);
-  margin-bottom: 1.25rem;
-}
-
-.logo-icon {
-  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .logo-text {
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
   background: linear-gradient(135deg, #38bdf8, #818cf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero-content h1 {
-  font-size: 2.75rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, #ffffff 30%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -1px;
+  margin-bottom: 0.25rem;
 }
 
 .tagline {
   color: var(--text-muted);
-  font-size: 1.15rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
 }
 
-/* Conteneur principal */
+/* Grille et Cartes Horizontales Compactes */
 .container {
   flex: 1;
-  max-width: 1200px;
-  width: 90%;
-  margin: 3rem auto;
+  max-width: 900px;
+  width: 92%;
+  margin: 1.25rem auto;
 }
 
-.section-title {
-  margin-bottom: 2.5rem;
-  text-align: center;
-}
-
-.section-title h2 {
-  font-size: 1.85rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.section-title p {
-  color: var(--text-muted);
-  font-size: 1rem;
-}
-
-/* Grille des applications */
 .apps-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.85rem;
 }
 
-/* Style de la Carte Glassmorphism */
 .app-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 1.75rem;
+  border-radius: 14px;
+  padding: 0.85rem;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  backdrop-filter: blur(16px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 0.75rem;
+  backdrop-filter: blur(12px);
 }
 
-.app-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(56, 189, 248, 0.35);
-  box-shadow: 0 12px 30px -10px var(--accent-glow);
+.card-left {
+  display: flex;
+  align-items: flex-start;
+}
+
+.app-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.15rem;
 }
 
-.app-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* Statuts (Badges) */
-.status-badge {
-  font-size: 0.75rem;
+.card-header h3 {
+  font-size: 0.95rem;
   font-weight: 700;
-  padding: 0.35rem 0.85rem;
+}
+
+.status-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
   border-radius: 99px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .status-dev {
   background: rgba(56, 189, 248, 0.15);
   color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
 .status-plan {
   background: rgba(251, 191, 36, 0.15);
   color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 .status-concept {
   background: rgba(168, 85, 247, 0.15);
   color: #c084fc;
-  border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
-/* Texte de la carte */
-.app-info h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-}
-
-.app-info .category {
-  display: inline-block;
-  font-size: 0.825rem;
+.category {
+  font-size: 0.725rem;
   font-weight: 600;
   color: var(--accent-purple);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
 }
 
-.app-info .description {
-  font-size: 0.9rem;
+.description {
+  font-size: 0.775rem;
   color: var(--text-muted);
-  line-height: 1.55;
-  margin-bottom: 1.5rem;
-}
-
-/* Boutons */
-.card-footer {
-  margin-top: auto;
+  line-height: 1.35;
+  margin-bottom: 0.6rem;
 }
 
 .btn-disabled {
   width: 100%;
-  padding: 0.8rem;
-  border-radius: 12px;
+  padding: 0.4rem;
+  border-radius: 8px;
   border: 1px solid var(--card-border);
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-muted);
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: not-allowed;
-  font-family: inherit;
 }
 
-/* Pied de page */
 footer {
   text-align: center;
-  padding: 2.5rem 1rem;
-  margin-top: 3rem;
+  padding: 1.25rem 1rem;
   border-top: 1px solid var(--card-border);
   color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-footer strong {
-  color: var(--text-main);
+  font-size: 0.775rem;
 }
