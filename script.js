@@ -1,148 +1,181 @@
-// --- VARIABLES GLOBALES ---
-let allApps = [];
-let filteredApps = [];
-let displayedCount = 0;
-const APPS_PER_PAGE = 24;
+// Base de données locale des projets (à remplacer plus tard par les appels API)
+let appsData = [
+  {
+    id: "downhub-vpn",
+    title: "DownHub VPN",
+    category: "Sécurité & Réseau",
+    icon: "fa-shield-halved",
+    status: "EN COURS",
+    progress: 75,
+    votes: 42,
+    desc: "Chiffrement élevé et protection de la vie privée via WireGuard."
+  },
+  {
+    id: "file-explorer",
+    title: "File Explorer",
+    category: "Utilitaire Système",
+    icon: "fa-folder-open",
+    status: "EN COURS",
+    progress: 40,
+    votes: 28,
+    desc: "Gestionnaire rapide, nettoyage mémoire et extraction d'archives."
+  },
+  {
+    id: "shield-antivirus",
+    title: "Shield Antivirus",
+    category: "Sécurité Android",
+    icon: "fa-shield-cat",
+    status: "PLANIFIÉ",
+    progress: 10,
+    votes: 56,
+    desc: "Analyse en temps réel des APKs et protection contre les malwares."
+  },
+  {
+    id: "media-player",
+    title: "Media Player",
+    category: "Multimédia",
+    icon: "fa-music",
+    status: "EN COURS",
+    progress: 60,
+    votes: 19,
+    desc: "Lecteur vidéo 4K et audio HD avec égaliseur et mode arrière-plan."
+  },
+  {
+    id: "afrilex-dict",
+    title: "AfriLex Dict",
+    category: "Éducation & Langues",
+    icon: "fa-language",
+    status: "EN COURS",
+    progress: 85,
+    votes: 95,
+    desc: "Dictionnaire Français - Langues Africaines fonctionnant hors-ligne."
+  },
+  {
+    id: "speed-booster",
+    title: "Speed Booster",
+    category: "Optimisation",
+    icon: "fa-rocket",
+    status: "CONCEPT",
+    progress: 0,
+    votes: 14,
+    desc: "Nettoyage des fichiers caches et libération de RAM en un clic."
+  }
+];
 
-// --- INITIALISATION AU CHARGEMENT ---
+let currentFilter = "ALL";
+
+// Initialisation au chargement de la page
 document.addEventListener("DOMContentLoaded", () => {
-  fetchAppsData();
-  setupEventListeners();
+  renderApps();
 });
 
-// --- CHARGEMENT DES DONNÉES JSON ---
-async function fetchAppsData() {
-  try {
-    const response = await fetch("apps.json");
-    if (!response.ok) throw new Error("Erreur de chargement des applications");
-    
-    allApps = await response.json();
-    filteredApps = [...allApps];
-    
-    renderAppsGrid(true);
-  } catch (error) {
-    console.error("❌ Erreur :", error);
-    const container = document.getElementById("apps-grid");
-    if (container) {
-      container.innerHTML = `<p class="error-msg">Impossible de charger le catalogue d'applications.</p>`;
-    }
-  }
-}
+// Affichage dynamique des cartes
+function renderApps() {
+  const grid = document.getElementById("appsGrid");
+  const searchVal = document.getElementById("searchInput").value.toLowerCase();
+  grid.innerHTML = "";
 
-// --- ÉCOUTEURS D'ÉVÉNEMENTS ---
-function setupEventListeners() {
-  // Recherche en temps réel
-  const searchInput = document.getElementById("search-input");
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      filterAppsBySearch(query);
-    });
-  }
-
-  // Défilement infini (Infinite Scroll)
-  window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-      renderAppsGrid(false);
-    }
+  const filtered = appsData.filter(app => {
+    const matchSearch = app.title.toLowerCase().includes(searchVal) || app.desc.toLowerCase().includes(searchVal);
+    const matchStatus = currentFilter === "ALL" || app.status === currentFilter;
+    return matchSearch && matchStatus;
   });
-}
 
-// --- FILTRAGE PAR CATEGORIE ---
-function switchCategory(categoryKey, btnElement) {
-  document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-  if (btnElement) btnElement.classList.add("active");
-
-  const key = categoryKey.toLowerCase();
-
-  if (key === "all" || key === "tous") {
-    filteredApps = [...allApps];
-  } else if (key === "jeux" || key === "games") {
-    filteredApps = allApps.filter(app => {
-      const cat = (app.category || "").toLowerCase();
-      return cat.includes("game") || cat.includes("jeu") || cat.includes("action") || cat.includes("arcade");
-    });
-  } else if (key === "vpn") {
-    filteredApps = allApps.filter(app => {
-      const cat = (app.category || "").toLowerCase();
-      const name = (app.name || "").toLowerCase();
-      const desc = (app.description || "").toLowerCase();
-      return cat.includes("vpn") || name.includes("vpn") || desc.includes("vpn") || cat.includes("utilit");
-    });
-  } else if (key === "outils" || key === "tools") {
-    filteredApps = allApps.filter(app => {
-      const cat = (app.category || "").toLowerCase();
-      return cat.includes("utilit") || cat.includes("productiv") || cat.includes("tool");
-    });
-  } else if (key === "social") {
-    filteredApps = allApps.filter(app => {
-      const cat = (app.category || "").toLowerCase();
-      return cat.includes("social") || cat.includes("messag") || cat.includes("réseau");
-    });
-  } else {
-    filteredApps = allApps.filter(app => {
-      const cat = (app.category || "").toLowerCase();
-      return cat.includes(key);
-    });
-  }
-
-  renderAppsGrid(true);
-}
-
-// --- FILTRAGE PAR RECHERCHE ---
-function filterAppsBySearch(query) {
-  if (!query) {
-    filteredApps = [...allApps];
-  } else {
-    filteredApps = allApps.filter(app => {
-      const name = (app.name || "").toLowerCase();
-      const cat = (app.category || "").toLowerCase();
-      return name.includes(query) || cat.includes(query);
-    });
-  }
-  renderAppsGrid(true);
-}
-
-// --- AFFICHAGE ET RENDU DANS LA GRILLE ---
-function renderAppsGrid(reset = false) {
-  const container = document.getElementById("apps-grid");
-  if (!container) return;
-
-  if (reset) {
-    container.innerHTML = "";
-    displayedCount = 0;
-  }
-
-  if (filteredApps.length === 0) {
-    container.innerHTML = `<p class="no-results">Aucune application trouvée.</p>`;
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Aucune application trouvée.</p>`;
     return;
   }
 
-  const nextBatch = filteredApps.slice(displayedCount, displayedCount + APPS_PER_PAGE);
-
-  nextBatch.forEach(app => {
+  filtered.forEach(app => {
     const card = document.createElement("div");
     card.className = "app-card";
-    
     card.innerHTML = `
-      <div class="app-icon-wrapper">
-        <img src="${app.icon}" alt="${app.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/100?text=APK'">
-      </div>
-      <div class="app-info">
-        <h3 class="app-title" title="${app.name}">${app.name}</h3>
-        <p class="app-category">${app.category}</p>
-        <div class="app-meta">
-          <span class="app-rating">⭐ ${app.rating}</span>
-          <span class="app-size">💾 ${app.size}</span>
+      <div>
+        <div class="card-header">
+          <i class="fa-solid ${app.icon} app-icon"></i>
+          <span class="badge badge-${app.status}">${app.status.replace("_", " ")}</span>
         </div>
-        <a href="${app.downloadUrl}" class="download-btn" target="_blank" rel="noopener noreferrer">
-          Télécharger
-        </a>
+        <h3 class="app-title">${app.title}</h3>
+        <span class="app-category">${app.category}</span>
+        <p class="app-desc">${app.desc}</p>
+      </div>
+
+      <div>
+        <!-- Barre de progression -->
+        <div class="progress-section">
+          <div class="progress-label">
+            <span>Avancement</span>
+            <span>${app.progress}%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: ${app.progress}%"></div>
+          </div>
+        </div>
+
+        <!-- Boutons d'interaction -->
+        <div class="card-actions">
+          <button class="btn btn-vote" onclick="voteApp('${app.id}')">
+            <i class="fa-solid fa-thumbs-up"></i> <span id="vote-count-${app.id}">${app.votes}</span>
+          </button>
+          <button class="btn btn-primary" onclick="openBeta('${app.id}', '${app.title}')">
+            Bêta
+          </button>
+        </div>
       </div>
     `;
-
-    container.appendChild(card);
+    grid.appendChild(card);
   });
+}
 
-  displayedCount += nextBatch.length;
+// Fonction de vote local
+function voteApp(id) {
+  const app = appsData.find(a => a.id === id);
+  if (app) {
+    app.votes++;
+    document.getElementById(`vote-count-${id}`).innerText = app.votes;
+  }
+}
+
+// Filtrage
+function setFilter(status, btnElement) {
+  currentFilter = status;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btnElement.classList.add("active");
+  renderApps();
+}
+
+function filterApps() {
+  renderApps();
+}
+
+// Modals
+function openModal(modalId) {
+  document.getElementById(modalId).classList.add("active");
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove("active");
+}
+
+function openBeta(appId, appTitle) {
+  document.getElementById("betaAppId").value = appId;
+  document.getElementById("betaAppTitle").innerText = "Application : " + appTitle;
+  openModal("betaModal");
+}
+
+// Soumissions des formulaires
+function handleBetaSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById("betaEmail").value;
+  alert(`Merci ! L'email ${email} a été inscrit à la bêta.`);
+  closeModal("betaModal");
+  e.target.reset();
+}
+
+function handleSuggestSubmit(e) {
+  e.preventDefault();
+  const title = document.getElementById("suggestTitle").value;
+  alert(`Merci ! Votre idée "${title}" a été soumise au développeur.`);
+  closeModal("suggestModal");
+  e.target.reset();
 }
