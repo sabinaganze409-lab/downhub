@@ -3,184 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DownHub Studio — Suite d'Applications Mobile</title>
+  <title>DownHub Studio — Catalogue d'Applications</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <div class="bg-glow bg-glow-1"></div>
-  <div class="bg-glow bg-glow-2"></div>
+  <!-- Background Glows -->
+  <div class="bg-glow top-left"></div>
+  <div class="bg-glow top-right"></div>
 
-  <!-- En-tête Compact -->
-  <header class="hero-section">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <div class="logo">
-        <span class="logo-icon">⚡</span>
-        <span class="logo-text">DownHub Studio</span>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-bolt text-accent"></i> DownHub Studio
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="openModal('suggestModal')">
+        <i class="fa-solid fa-lightbulb"></i> Suggérer une idée
+      </button>
+      <div class="social-links">
+        <a href="#" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="#" target="_blank"><i class="fa-brands fa-discord"></i></a>
       </div>
-      <h1>Catalogue d'Applications</h1>
-      <p class="tagline">Nos projets Android en cours de développement.</p>
     </div>
   </header>
 
-  <!-- Section Principale (Blocs Compacts) -->
-  <main class="container">
-    <div class="apps-grid">
-
-      <!-- 1. DownHub VPN -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">🔒</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>DownHub VPN</h3>
-            <span class="status-badge status-dev">En cours</span>
-          </div>
-          <span class="category">Sécurité & Réseau</span>
-          <p class="description">Chiffrement élevé et protection de la vie privée via WireGuard.</p>
-          <button class="btn-disabled" disabled>Bientôt disponible</button>
-        </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Catalogue d'Applications</h1>
+    <p>Nos projets Android et logiciels en cours de développement.</p>
+    
+    <!-- Controls (Search & Filter) -->
+    <div class="controls">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher une application..." oninput="filterApps()">
       </div>
-
-      <!-- 2. Gestionnaire de Fichiers -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">📁</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>File Explorer</h3>
-            <span class="status-badge status-dev">En cours</span>
-          </div>
-          <span class="category">Utilitaire Système</span>
-          <p class="description">Gestionnaire rapide, nettoyage mémoire et extraction d'archives.</p>
-          <button class="btn-disabled" disabled>Bientôt disponible</button>
-        </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="setFilter('ALL', this)">Tous</button>
+        <button class="filter-btn" onclick="setFilter('EN COURS', this)">En cours</button>
+        <button class="filter-btn" onclick="setFilter('PLANIFIÉ', this)">Planifié</button>
+        <button class="filter-btn" onclick="setFilter('CONCEPT', this)">Concept</button>
       </div>
-
-      <!-- 3. Antivirus Android -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">🛡️</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>Shield Antivirus</h3>
-            <span class="status-badge status-plan">Planifié</span>
-          </div>
-          <span class="category">Sécurité Android</span>
-          <p class="description">Analyse en temps réel des APKs et protection contre les malwares.</p>
-          <button class="btn-disabled" disabled>Bientôt disponible</button>
-        </div>
-      </div>
-
-      <!-- 4. Lecteur Vidéo & Musique -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">🎵</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>Media Player</h3>
-            <span class="status-badge status-dev">En cours</span>
-          </div>
-          <span class="category">Multimédia</span>
-          <p class="description">Lecteur vidéo 4K et audio HD avec égaliseur et mode arrière-plan.</p>
-          <button class="btn-disabled" disabled>Bientôt disponible</button>
-        </div>
-      </div>
-
-      <!-- 5. Dictionnaire Multilingue -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">🌍</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>AfriLex Dict</h3>
-            <span class="status-badge status-dev">En cours</span>
-          </div>
-          <span class="category">Éducation & Langues</span>
-          <p class="description">Dictionnaire Français - Langues Africaines fonctionnant hors-ligne.</p>
-          <button class="btn-disabled" disabled>Bientôt disponible</button>
-        </div>
-      </div>
-
-      <!-- 6. Galerie Photo Vault -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">🖼️</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>Gallery Vault</h3>
-            <span class="status-badge status-plan">Planifié</span>
-          </div>
-          <span class="category">Photos & Vidéos</span>
-          <p class="description">Galerie rapide avec coffre-fort privé protégé par code ou empreinte.</p>
-          <button class="btn-disabled" disabled>Bientôt disponible</button>
-        </div>
-      </div>
-
-      <!-- 7. Booster de RAM -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">🚀</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>Speed Booster</h3>
-            <span class="status-badge status-concept">Concept</span>
-          </div>
-          <span class="category">Optimisation</span>
-          <p class="description">Nettoyage des fichiers caches et libération de RAM en un clic.</p>
-          <button class="btn-disabled" disabled>Prochainement</button>
-        </div>
-      </div>
-
-      <!-- 8. Compresseur de Fichiers -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">📦</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>Media Compressor</h3>
-            <span class="status-badge status-concept">Concept</span>
-          </div>
-          <span class="category">Utilitaire</span>
-          <p class="description">Réduction de taille des vidéos et images sans perte de qualité.</p>
-          <button class="btn-disabled" disabled>Prochainement</button>
-        </div>
-      </div>
-
-      <!-- 9. Scanner PDF -->
-      <div class="app-card">
-        <div class="card-left">
-          <div class="app-icon">📄</div>
-        </div>
-        <div class="card-right">
-          <div class="card-header">
-            <h3>CamScanner Lite</h3>
-            <span class="status-badge status-concept">Concept</span>
-          </div>
-          <span class="category">Productivité</span>
-          <p class="description">Numérisation rapide de documents physiques en fichiers PDF.</p>
-          <button class="btn-disabled" disabled>Prochainement</button>
-        </div>
-      </div>
-
     </div>
+  </section>
+
+  <!-- Apps Grid -->
+  <main class="grid-container" id="appsGrid">
+    <!-- Injecté dynamiquement par app.js -->
   </main>
 
+  <!-- Modal: Inscription Bêta -->
+  <div class="modal-overlay" id="betaModal">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal('betaModal')">&times;</button>
+      <h3><i class="fa-solid fa-rocket"></i> Rejoindre la Bêta</h3>
+      <p id="betaAppTitle">Application : </p>
+      <form id="betaForm" onsubmit="handleBetaSubmit(event)">
+        <input type="hidden" id="betaAppId">
+        <div class="input-group">
+          <label>Votre nom / pseudo</label>
+          <input type="text" id="betaName" required placeholder="Ex: Alex">
+        </div>
+        <div class="input-group">
+          <label>Votre Adresse Email</label>
+          <input type="email" id="betaEmail" required placeholder="exemple@gmail.com">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Suggérer une idée -->
+  <div class="modal-overlay" id="suggestModal">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal('suggestModal')">&times;</button>
+      <h3><i class="fa-solid fa-lightbulb"></i> Proposer une idée</h3>
+      <p>Proposez une application que vous aimeriez voir développée !</p>
+      <form id="suggestForm" onsubmit="handleSuggestSubmit(event)">
+        <div class="input-group">
+          <label>Titre de l'application</label>
+          <input type="text" id="suggestTitle" required placeholder="Ex: Clean Master Lite">
+        </div>
+        <div class="input-group">
+          <label>Catégorie</label>
+          <input type="text" id="suggestCategory" required placeholder="Ex: Sécurité, Multimédia...">
+        </div>
+        <div class="input-group">
+          <label>Description des fonctionnalités</label>
+          <textarea id="suggestDesc" rows="4" required placeholder="Décrivez l'application..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Envoyer l'idée</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2026 <strong>DownHub Studio</strong> — Par Sabin Aganze Ntibonerha.</p>
+    <p>© 2026 <strong>DownHub Studio</strong> — Par Sabin Aganze Ntibonerha.</p>
   </footer>
 
+  <script src="app.js"></script>
 </body>
 </html>
