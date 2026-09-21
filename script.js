@@ -1,3 +1,4 @@
+// Base de données locale des projets (à remplacer plus tard par les appels API)
 let appsData = [
   {
     id: "downhub-vpn",
@@ -63,13 +64,15 @@ let appsData = [
 
 let currentFilter = "ALL";
 
+// Initialisation au chargement de la page
+document.addEventListener("DOMContentLoaded", () => {
+  renderApps();
+});
+
+// Affichage dynamique des cartes
 function renderApps() {
   const grid = document.getElementById("appsGrid");
-  if (!grid) return;
-  
-  const searchInput = document.getElementById("searchInput");
-  const searchVal = searchInput ? searchInput.value.toLowerCase() : "";
-  
+  const searchVal = document.getElementById("searchInput").value.toLowerCase();
   grid.innerHTML = "";
 
   const filtered = appsData.filter(app => {
@@ -79,7 +82,7 @@ function renderApps() {
   });
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">Aucune application trouvée.</p>`;
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Aucune application trouvée.</p>`;
     return;
   }
 
@@ -98,6 +101,7 @@ function renderApps() {
       </div>
 
       <div>
+        <!-- Barre de progression -->
         <div class="progress-section">
           <div class="progress-label">
             <span>Avancement</span>
@@ -108,6 +112,7 @@ function renderApps() {
           </div>
         </div>
 
+        <!-- Boutons d'interaction -->
         <div class="card-actions">
           <button class="btn btn-vote" onclick="voteApp('${app.id}')">
             <i class="fa-solid fa-thumbs-up"></i> <span id="vote-count-${app.id}">${app.votes}</span>
@@ -122,19 +127,20 @@ function renderApps() {
   });
 }
 
+// Fonction de vote local
 function voteApp(id) {
   const app = appsData.find(a => a.id === id);
   if (app) {
     app.votes++;
-    const countElem = document.getElementById(`vote-count-${id}`);
-    if (countElem) countElem.innerText = app.votes;
+    document.getElementById(`vote-count-${id}`).innerText = app.votes;
   }
 }
 
+// Filtrage
 function setFilter(status, btnElement) {
   currentFilter = status;
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-  if (btnElement) btnElement.classList.add("active");
+  btnElement.classList.add("active");
   renderApps();
 }
 
@@ -142,24 +148,22 @@ function filterApps() {
   renderApps();
 }
 
+// Modals
 function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) modal.classList.add("active");
+  document.getElementById(modalId).classList.add("active");
 }
 
 function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) modal.classList.remove("active");
+  document.getElementById(modalId).classList.remove("active");
 }
 
 function openBeta(appId, appTitle) {
-  const betaId = document.getElementById("betaAppId");
-  const betaTitle = document.getElementById("betaAppTitle");
-  if (betaId) betaId.value = appId;
-  if (betaTitle) betaTitle.innerText = "Application : " + appTitle;
+  document.getElementById("betaAppId").value = appId;
+  document.getElementById("betaAppTitle").innerText = "Application : " + appTitle;
   openModal("betaModal");
 }
 
+// Soumissions des formulaires
 function handleBetaSubmit(e) {
   e.preventDefault();
   const email = document.getElementById("betaEmail").value;
@@ -175,6 +179,3 @@ function handleSuggestSubmit(e) {
   closeModal("suggestModal");
   e.target.reset();
 }
-
-// Lancement automatique dès le chargement du DOM
-document.addEventListener("DOMContentLoaded", renderApps);
