@@ -1,111 +1,316 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DownHub Studio — Catalogue d'Applications</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DownHub Studio — Catalogue & Interactions</title>
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --whatsapp-color: #25d366;
+            --text-color: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        h1 { color: var(--accent); margin-bottom: 5px; }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+
+        .card h3 { color: var(--accent); margin-top: 0; }
+
+        .progress-bar-bg {
+            background-color: #334155;
+            border-radius: 8px;
+            height: 12px;
+            width: 100%;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-bar-fill {
+            background-color: var(--accent);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            background-color: #0284c7;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-vote {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-whatsapp {
+            background-color: var(--whatsapp-color);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            text-align: center;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .form-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 600px;
+            margin: 40px auto;
+            border: 1px solid #334155;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background-color: #0f172a;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            background-color: var(--whatsapp-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn-submit:hover { background-color: #1eb854; }
+    </style>
 </head>
 <body>
 
-  <!-- Background Glows -->
-  <div class="bg-glow top-left"></div>
-  <div class="bg-glow top-right"></div>
+    <header>
+        <h1>⚡ DownHub Studio</h1>
+        <p>Projets en développement & Interactions en direct</p>
+    </header>
 
-  <!-- Header -->
-  <header>
-    <div class="logo">
-      <i class="fa-solid fa-bolt text-accent"></i> DownHub Studio
-    </div>
-    <div class="header-actions">
-      <button class="btn btn-outline" onclick="openModal('suggestModal')">
-        <i class="fa-solid fa-lightbulb"></i> Suggérer une idée
-      </button>
-      <div class="social-links">
-        <a href="#" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-        <a href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-        <a href="#" target="_blank"><i class="fa-brands fa-discord"></i></a>
-      </div>
-    </div>
-  </header>
+    <!-- LISTE DES APPLICATIONS -->
+    <main class="container" id="apps-container">
+        <p>Chargement des applications...</p>
+    </main>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>Catalogue d'Applications</h1>
-    <p>Nos projets Android et logiciels en cours de développement.</p>
-    
-    <!-- Controls (Search & Filter) -->
-    <div class="controls">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Rechercher une application..." oninput="filterApps()">
-      </div>
-      <div class="filter-buttons">
-        <button class="filter-btn active" onclick="setFilter('ALL', this)">Tous</button>
-        <button class="filter-btn" onclick="setFilter('EN COURS', this)">En cours</button>
-        <button class="filter-btn" onclick="setFilter('PLANIFIÉ', this)">Planifié</button>
-        <button class="filter-btn" onclick="setFilter('CONCEPT', this)">Concept</button>
-      </div>
-    </div>
-  </section>
+    <!-- FORMULAIRE 1 : INSCRIPTION AU BÊTA-TEST -->
+    <section class="form-section">
+        <h2>🚀 Devenir Bêta-Testeur</h2>
+        <form id="beta-form">
+            <label for="userName">Nom / Pseudo :</label>
+            <input type="text" id="userName" required placeholder="Ex: Sabin">
 
-  <!-- Apps Grid -->
-  <main class="grid-container" id="appsGrid">
-    <!-- Injecté dynamiquement par app.js -->
-  </main>
+            <label for="userEmail">Adresse Email ou Téléphone :</label>
+            <input type="text" id="userEmail" required placeholder="Email ou numéro WhatsApp">
 
-  <!-- Modal: Inscription Bêta -->
-  <div class="modal-overlay" id="betaModal">
-    <div class="modal-card">
-      <button class="close-btn" onclick="closeModal('betaModal')">&times;</button>
-      <h3><i class="fa-solid fa-rocket"></i> Rejoindre la Bêta</h3>
-      <p id="betaAppTitle">Application : </p>
-      <form id="betaForm" onsubmit="handleBetaSubmit(event)">
-        <input type="hidden" id="betaAppId">
-        <div class="input-group">
-          <label>Votre nom / pseudo</label>
-          <input type="text" id="betaName" required placeholder="Ex: Alex">
-        </div>
-        <div class="input-group">
-          <label>Votre Adresse Email</label>
-          <input type="email" id="betaEmail" required placeholder="exemple@gmail.com">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
-      </form>
-    </div>
-  </div>
+            <label for="appSelect">Application concernée :</label>
+            <select id="appSelect"></select>
 
-  <!-- Modal: Suggérer une idée -->
-  <div class="modal-overlay" id="suggestModal">
-    <div class="modal-card">
-      <button class="close-btn" onclick="closeModal('suggestModal')">&times;</button>
-      <h3><i class="fa-solid fa-lightbulb"></i> Proposer une idée</h3>
-      <p>Proposez une application que vous aimeriez voir développée !</p>
-      <form id="suggestForm" onsubmit="handleSuggestSubmit(event)">
-        <div class="input-group">
-          <label>Titre de l'application</label>
-          <input type="text" id="suggestTitle" required placeholder="Ex: Clean Master Lite">
-        </div>
-        <div class="input-group">
-          <label>Catégorie</label>
-          <input type="text" id="suggestCategory" required placeholder="Ex: Sécurité, Multimédia...">
-        </div>
-        <div class="input-group">
-          <label>Description des fonctionnalités</label>
-          <textarea id="suggestDesc" rows="4" required placeholder="Décrivez l'application..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Envoyer l'idée</button>
-      </form>
-    </div>
-  </div>
+            <button type="submit" class="btn-submit">📲 S'inscrire & Envoyer via WhatsApp</button>
+        </form>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2026 <strong>DownHub Studio</strong> — Par Sabin Aganze Ntibonerha.</p>
-  </footer>
+    <!-- FORMULAIRE 2 : PROPOSER UNE SUGESTION OU IDÉE -->
+    <section class="form-section">
+        <h2>💡 Soumettre une Idée / Suggestion</h2>
+        <form id="suggestion-form">
+            <label for="sugName">Votre Nom / Pseudo :</label>
+            <input type="text" id="sugName" required placeholder="Ex: Alex">
 
-  <!-- Si ton fichier sur GitHub s'appelle script.js, mets ceci : -->
-<script src="script.js"></script>
+            <label for="sugTitle">Titre de l'idée :</label>
+            <input type="text" id="sugTitle" required placeholder="Ex: Ajouter un mode sombre">
+
+            <label for="sugCategory">Catégorie :</label>
+            <select id="sugCategory">
+                <option value="Nouvelle Fonctionnalité">Nouvelle Fonctionnalité</option>
+                <option value="Signalement de Bug">Signalement de Bug</option>
+                <option value="Autre Project">Idée de nouveau projet</option>
+            </select>
+
+            <label for="sugDesc">Détails de votre suggestion :</label>
+            <textarea id="sugDesc" rows="4" required placeholder="Décrivez votre idée en détail..."></textarea>
+
+            <button type="submit" class="btn-submit">💡 Envoyer la Suggestion sur WhatsApp</button>
+        </form>
+    </section>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION
+        // ==========================================
+        // Remplace par ton vrai numéro WhatsApp (ex: 243XXXXXXXXX sans le +)
+        const WHATSAPP_NUMBER = "243XXXXXXXXX";
+
+        // Vos identifiants Supabase
+        const SUPABASE_URL = "https://efwmuefadqrebnxakbic.supabase.co";[cite: 5]
+        const SUPABASE_ANON_KEY = "sb_publishable_ew35mxTRviE7k0pH5QIM3Q_GvWyD...";[cite: 7]
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // --- 1. CHARGER LES APPS DEPUIS SUPABASE ---
+        async function loadApps() {
+            const container = document.getElementById('apps-container');
+            const select = document.getElementById('appSelect');
+
+            const { data: apps, error } = await supabase.from('apps').select('*');
+
+            if (error) {
+                container.innerHTML = "<p>Erreur de chargement des données.</p>";
+                return;
+            }
+
+            container.innerHTML = "";
+            select.innerHTML = "";
+
+            apps.forEach(app => {
+                // Lien de contact direct par app
+                const msg = encodeURIComponent(`Bonjour, je souhaite échanger à propos de l'application : ${app.title}`);
+                const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <span class="badge">${app.status || 'EN COURS'}</span>
+                    <h3>${app.title}</h3>
+                    <p>${app.description || ''}</p>
+                    <div>Avancement : <strong>${app.progress || 0}%</strong></div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: ${app.progress || 0}%;"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-vote" onclick="voteForApp('${app.id}', ${app.votes || 0})">
+                            👍 Voter (${app.votes || 0})
+                        </button>
+                        <a href="${waUrl}" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                const option = document.createElement('option');
+                option.value = app.title;
+                option.textContent = app.title;
+                select.appendChild(option);
+            });
+        }
+
+        // --- 2. VOTE ---
+        async function voteForApp(appId, currentVotes) {
+            await supabase.from('apps').update({ votes: currentVotes + 1 }).eq('id', appId);
+            loadApps();
+        }
+
+        // --- 3. ENVOI INSCRIPTION BÊTA SUR SUPABASE + WHATSAPP ---
+        document.getElementById('beta-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('userName').value;
+            const contact = document.getElementById('userEmail').value;
+            const appName = document.getElementById('appSelect').value;
+
+            // Enregistrement dans la base Supabase
+            await supabase.from('beta_requests').insert([{ user_name: name, email: contact, app_id: appName }]);
+
+            // Message formaté pour WhatsApp
+            const text = `🚀 *NOUVELLE INSCRIPTION BÊTA TEST*\n\n` +
+                         `👤 *Nom* : ${name}\n` +
+                         `📞 *Contact* : ${contact}\n` +
+                         `📱 *Application* : ${appName}`;
+
+            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+            
+            // Redirection vers WhatsApp
+            window.open(waLink, '_blank');
+            document.getElementById('beta-form').reset();
+        });
+
+        // --- 4. ENVOI SUGGESTION SUR SUPABASE + WHATSAPP ---
+        document.getElementById('suggestion-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('sugName').value;
+            const title = document.getElementById('sugTitle').value;
+            const category = document.getElementById('sugCategory').value;
+            const description = document.getElementById('sugDesc').value;
+
+            // Enregistrement dans Supabase
+            await supabase.from('suggestions').insert([{ 
+                title: title, 
+                category: category, 
+                description: `Par: ${name} - ${description}` 
+            }]);
+
+            // Message formaté pour WhatsApp
+            const text = `💡 *NOUVELLE SUGGESTION UTILISATEUR*\n\n` +
+                         `👤 *De* : ${name}\n` +
+                         `📌 *Titre* : ${title}\n` +
+                         `🏷️ *Catégorie* : ${category}\n` +
+                         `📝 *Message* :\n${description}`;
+
+            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+            
+            // Redirection vers WhatsApp
+            window.open(waLink, '_blank');
+            document.getElementById('suggestion-form').reset();
+        });
+
+        // Lancement initial
+        loadApps();
+    </script>
 </body>
 </html>
