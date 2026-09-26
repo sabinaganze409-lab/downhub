@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DownHub Studio — Catalogue & Interactions</title>
-    <!-- Supabase JS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>DownHub Studio — Projets & Contacts Directs</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -13,6 +11,7 @@
             --accent: #38bdf8;
             --whatsapp-color: #25d366;
             --text-color: #f8fafc;
+            --text-muted: #94a3b8;
         }
 
         body {
@@ -74,33 +73,19 @@
             background-color: #0284c7;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-vote {
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            flex: 1;
-        }
-
         .btn-whatsapp {
             background-color: var(--whatsapp-color);
             color: white;
             text-decoration: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 6px;
-            display: inline-block;
+            display: block;
             text-align: center;
             font-weight: bold;
-            flex: 1;
+            margin-top: 15px;
         }
+
+        .btn-whatsapp:hover { background-color: #1eb854; }
 
         .form-section {
             background-color: var(--card-bg);
@@ -141,12 +126,12 @@
 
     <header>
         <h1>⚡ DownHub Studio</h1>
-        <p>Projets en développement & Interactions en direct</p>
+        <p>Projets en développement & Contact direct WhatsApp</p>
     </header>
 
     <!-- LISTE DES APPLICATIONS -->
     <main class="container" id="apps-container">
-        <p>Chargement des applications...</p>
+        <!-- Rempli automatiquement par la liste locale -->
     </main>
 
     <!-- FORMULAIRE 1 : INSCRIPTION AU BÊTA-TEST -->
@@ -156,17 +141,17 @@
             <label for="userName">Nom / Pseudo :</label>
             <input type="text" id="userName" required placeholder="Ex: Sabin">
 
-            <label for="userEmail">Adresse Email ou Téléphone :</label>
-            <input type="text" id="userEmail" required placeholder="Email ou numéro WhatsApp">
+            <label for="userEmail">Téléphone / WhatsApp :</label>
+            <input type="text" id="userEmail" required placeholder="Votre numéro de téléphone">
 
             <label for="appSelect">Application concernée :</label>
             <select id="appSelect"></select>
 
-            <button type="submit" class="btn-submit">📲 S'inscrire & Envoyer via WhatsApp</button>
+            <button type="submit" class="btn-submit">📲 S'inscrire & Envoyer sur WhatsApp</button>
         </form>
     </section>
 
-    <!-- FORMULAIRE 2 : PROPOSER UNE SUGESTION OU IDÉE -->
+    <!-- FORMULAIRE 2 : PROPOSER UNE SUGGESTION -->
     <section class="form-section">
         <h2>💡 Soumettre une Idée / Suggestion</h2>
         <form id="suggestion-form">
@@ -174,71 +159,74 @@
             <input type="text" id="sugName" required placeholder="Ex: Alex">
 
             <label for="sugTitle">Titre de l'idée :</label>
-            <input type="text" id="sugTitle" required placeholder="Ex: Ajouter un mode sombre">
+            <input type="text" id="sugTitle" required placeholder="Ex: Mode sombre ou nouvelle option">
 
             <label for="sugCategory">Catégorie :</label>
             <select id="sugCategory">
                 <option value="Nouvelle Fonctionnalité">Nouvelle Fonctionnalité</option>
                 <option value="Signalement de Bug">Signalement de Bug</option>
-                <option value="Autre Project">Idée de nouveau projet</option>
+                <option value="Autre Projet">Autre Projet</option>
             </select>
 
             <label for="sugDesc">Détails de votre suggestion :</label>
-            <textarea id="sugDesc" rows="4" required placeholder="Décrivez votre idée en détail..."></textarea>
+            <textarea id="sugDesc" rows="4" required placeholder="Décrivez votre idée..."></textarea>
 
             <button type="submit" class="btn-submit">💡 Envoyer la Suggestion sur WhatsApp</button>
         </form>
     </section>
 
     <script>
-        // ==========================================
-        // CONFIGURATION
-        // ==========================================
-        // Remplace par ton vrai numéro WhatsApp (ex: 243XXXXXXXXX sans le +)
-        const WHATSAPP_NUMBER = "243981698102";
+        // Numéro WhatsApp configuré
+        const WHATSAPP_NUMBER = "24398169812";
 
-        // Vos identifiants Supabase
-        const SUPABASE_URL = "https://efwmuefadqrebnxakbic.supabase.co";[cite: 5]
-        const SUPABASE_ANON_KEY = "sb_publishable_ew35mxTRviE7k0pH5QIM3Q_GvWyD...";[cite: 7]
+        // Liste locale de tes projets (tu peux directement modifier le pourcentage et les détails ici)
+        const myApps = [
+            {
+                id: "downhub-app",
+                title: "DownHub Store",
+                description: "Catalogue d'applications et outils en téléchargement direct.",
+                status: "EN COURS",
+                progress: 85
+            },
+            {
+                id: "downhub-vpn",
+                title: "DownHub VPN",
+                description: "Application de connexion sécurisée et rapide.",
+                status: "PLANIFIÉ",
+                progress: 40
+            },
+            {
+                id: "downhub-ai",
+                title: "DownHub Assistant AI",
+                description: "Assistant virtuel intelligent intégré.",
+                status: "CONCEPT",
+                progress: 20
+            }
+        ];
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // --- 1. CHARGER LES APPS DEPUIS SUPABASE ---
-        async function loadApps() {
+        // 1. Affichage des applications sur la page
+        function displayApps() {
             const container = document.getElementById('apps-container');
             const select = document.getElementById('appSelect');
-
-            const { data: apps, error } = await supabase.from('apps').select('*');
-
-            if (error) {
-                container.innerHTML = "<p>Erreur de chargement des données.</p>";
-                return;
-            }
 
             container.innerHTML = "";
             select.innerHTML = "";
 
-            apps.forEach(app => {
-                // Lien de contact direct par app
-                const msg = encodeURIComponent(`Bonjour, je souhaite échanger à propos de l'application : ${app.title}`);
+            myApps.forEach(app => {
+                const msg = encodeURIComponent(`Bonjour ! Je souhaite avoir des informations sur : ${app.title}`);
                 const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
 
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <span class="badge">${app.status || 'EN COURS'}</span>
+                    <span class="badge">${app.status}</span>
                     <h3>${app.title}</h3>
-                    <p>${app.description || ''}</p>
-                    <div>Avancement : <strong>${app.progress || 0}%</strong></div>
+                    <p>${app.description}</p>
+                    <div>Avancement : <strong>${app.progress}%</strong></div>
                     <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: ${app.progress || 0}%;"></div>
+                        <div class="progress-bar-fill" style="width: ${app.progress}%;"></div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn-vote" onclick="voteForApp('${app.id}', ${app.votes || 0})">
-                            👍 Voter (${app.votes || 0})
-                        </button>
-                        <a href="${waUrl}" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
-                    </div>
+                    <a href="${waUrl}" target="_blank" class="btn-whatsapp">💬 Discuter du projet</a>
                 `;
                 container.appendChild(card);
 
@@ -249,38 +237,25 @@
             });
         }
 
-        // --- 2. VOTE ---
-        async function voteForApp(appId, currentVotes) {
-            await supabase.from('apps').update({ votes: currentVotes + 1 }).eq('id', appId);
-            loadApps();
-        }
-
-        // --- 3. ENVOI INSCRIPTION BÊTA SUR SUPABASE + WHATSAPP ---
-        document.getElementById('beta-form').addEventListener('submit', async (e) => {
+        // 2. Inscription Bêta -> WhatsApp
+        document.getElementById('beta-form').addEventListener('submit', (e) => {
             e.preventDefault();
 
             const name = document.getElementById('userName').value;
             const contact = document.getElementById('userEmail').value;
             const appName = document.getElementById('appSelect').value;
 
-            // Enregistrement dans la base Supabase
-            await supabase.from('beta_requests').insert([{ user_name: name, email: contact, app_id: appName }]);
-
-            // Message formaté pour WhatsApp
-            const text = `🚀 *NOUVELLE INSCRIPTION BÊTA TEST*\n\n` +
+            const text = `🚀 *INSCRIPTION BÊTA TEST*\n\n` +
                          `👤 *Nom* : ${name}\n` +
                          `📞 *Contact* : ${contact}\n` +
                          `📱 *Application* : ${appName}`;
 
-            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-            
-            // Redirection vers WhatsApp
-            window.open(waLink, '_blank');
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
             document.getElementById('beta-form').reset();
         });
 
-        // --- 4. ENVOI SUGGESTION SUR SUPABASE + WHATSAPP ---
-        document.getElementById('suggestion-form').addEventListener('submit', async (e) => {
+        // 3. Suggestion -> WhatsApp
+        document.getElementById('suggestion-form').addEventListener('submit', (e) => {
             e.preventDefault();
 
             const name = document.getElementById('sugName').value;
@@ -288,29 +263,18 @@
             const category = document.getElementById('sugCategory').value;
             const description = document.getElementById('sugDesc').value;
 
-            // Enregistrement dans Supabase
-            await supabase.from('suggestions').insert([{ 
-                title: title, 
-                category: category, 
-                description: `Par: ${name} - ${description}` 
-            }]);
-
-            // Message formaté pour WhatsApp
-            const text = `💡 *NOUVELLE SUGGESTION UTILISATEUR*\n\n` +
+            const text = `💡 *NOUVELLE SUGGESTION*\n\n` +
                          `👤 *De* : ${name}\n` +
                          `📌 *Titre* : ${title}\n` +
                          `🏷️ *Catégorie* : ${category}\n` +
-                         `📝 *Message* :\n${description}`;
+                         `📝 *Détails* :\n${description}`;
 
-            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-            
-            // Redirection vers WhatsApp
-            window.open(waLink, '_blank');
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
             document.getElementById('suggestion-form').reset();
         });
 
-        // Lancement initial
-        loadApps();
+        // Charger les données au démarrage
+        displayApps();
     </script>
 </body>
 </html>
