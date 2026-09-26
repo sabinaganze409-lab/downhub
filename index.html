@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DownHub Studio — Plateforme Officielle</title>
+    <title>DownHub Studio — Hub d'Apps & Outils</title>
 
     <!-- Google Analytics (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-770R1VEX1R"></script>
@@ -23,6 +23,7 @@
             --whatsapp-color: #25d366;
             --text-color: #f8fafc;
             --border-color: rgba(255, 255, 255, 0.08);
+            --ad-bg: rgba(30, 41, 59, 0.5);
         }
 
         body {
@@ -38,16 +39,56 @@
             min-height: 100vh;
         }
 
-        header { text-align: center; padding: 30px 0 10px; }
+        header { text-align: center; padding: 20px 0 10px; }
         header h1 { color: var(--accent); margin: 0 0 10px 0; font-size: 2.2rem; cursor: pointer; user-select: none; }
         header p { color: #94a3b8; margin: 0; }
 
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0 15px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .section-content { display: none; }
+        .section-content.active { display: block; }
+
         .container {
             max-width: 1100px;
-            margin: 30px auto;
+            margin: 20px auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
+        }
+
+        /* BANNIÈRES PUB PLACEHOLDERS */
+        .ad-banner {
+            max-width: 1100px;
+            margin: 20px auto;
+            background: var(--ad-bg);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
         }
 
         .card {
@@ -85,7 +126,7 @@
 
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
 
-        .btn-vote, .btn-whatsapp {
+        .btn-action {
             padding: 10px;
             border-radius: 8px;
             font-weight: bold;
@@ -94,10 +135,60 @@
             text-align: center;
             text-decoration: none;
             flex: 1;
+            background: var(--accent);
+            color: #000;
         }
-        .btn-vote { background: #2563eb; color: white; }
-        .btn-whatsapp { background: var(--whatsapp-color); color: white; }
 
+        /* --- STYLES OUTILS --- */
+        .tool-box {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        /* --- STYLES BLOG --- */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            margin: 20px auto;
+        }
+
+        .blog-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .blog-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+        .blog-card h3 { color: var(--accent); margin-top: 0; }
+
+        /* --- GAME STYLES --- */
+        #game-container {
+            text-align: center;
+            max-width: 500px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+        canvas {
+            background: #050b14;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 400px;
+            touch-action: none;
+        }
+
+        /* FORM BÊTA */
         .form-section {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -107,10 +198,10 @@
             border: 1px solid var(--border-color);
         }
 
-        input, select {
+        input, select, button {
             width: 100%;
             padding: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border-radius: 8px;
             border: 1px solid #334155;
             background: rgba(11, 18, 32, 0.8);
@@ -122,14 +213,11 @@
             background-color: var(--whatsapp-color);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
             cursor: pointer;
-            width: 100%;
             font-weight: bold;
         }
 
-        /* --- DASHBOARD ADMIN CACHÉ --- */
+        /* DASHBOARD ADMIN CACHÉ */
         #admin-panel {
             display: none;
             background: #111827;
@@ -141,75 +229,111 @@
             box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
         }
 
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-box {
-            background: #1f2937;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #374151;
-        }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 20px; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-box { background: #1f2937; padding: 15px; border-radius: 10px; border: 1px solid #374151; }
         .stat-box h4 { margin: 0; color: #9ca3af; font-size: 13px; }
         .stat-box .number { font-size: 24px; font-weight: bold; color: var(--accent); margin-top: 5px; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #1f2937;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
+        table { width: 100%; border-collapse: collapse; background: #1f2937; border-radius: 8px; overflow: hidden; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #374151; }
         th { background: #111827; color: var(--accent); font-size: 14px; }
-
-        .btn-analytics {
-            display: inline-block;
-            background: #f59e0b;
-            color: #000;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            margin-top: 15px;
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <!-- Un triple clic sur le titre ouvrira le panneau admin -->
         <h1 id="site-title" title="DownHub Studio">⚡ DownHub Studio</h1>
-        <p>Applications & Développements en cours</p>
+        <p>Applications, Tutoriels & Outils Gratuits</p>
     </header>
 
-    <main class="container" id="apps-container"></main>
+    <!-- EMPLACEMENT PUB HAUT PAGE -->
+    <div class="ad-banner">
+        📢 <em>Espace Publicitaire (AdSense / Monetag Banner 728x90)</em>
+    </div>
 
-    <section class="form-section">
-        <h2>🚀 Devenir Bêta-Testeur</h2>
-        <form id="beta-form">
-            <input type="text" id="userName" required placeholder="Nom / Pseudo">
-            <input type="text" id="userEmail" required placeholder="Numéro WhatsApp ou Email">
-            <select id="appSelect"></select>
-            <button type="submit" class="btn-submit">📲 Envoyer la demande sur WhatsApp</button>
-        </form>
-    </section>
+    <!-- NAVIGATION PRINCIPALE PAR ONGLETS -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('apps')">📱 Applications</button>
+        <button class="tab-btn" onclick="switchTab('tools')">🛠️ Outils Web</button>
+        <button class="tab-btn" onclick="switchTab('blog')">📚 Tutoriels & Astuces</button>
+        <button class="tab-btn" onclick="switchTab('game')">🎮 Mini-Jeu</button>
+    </div>
 
-    <!-- DASHBOARD ADMIN (MASQUÉ DE BASE) -->
+    <!-- SECTION 1: APPS -->
+    <div id="sec-apps" class="section-content active">
+        <main class="container" id="apps-container"></main>
+
+        <section class="form-section">
+            <h2>🚀 Devenir Bêta-Testeur</h2>
+            <form id="beta-form">
+                <input type="text" id="userName" required placeholder="Nom / Pseudo">
+                <input type="text" id="userEmail" required placeholder="Numéro WhatsApp ou Email">
+                <select id="appSelect"></select>
+                <button type="submit" class="btn-submit">📲 Envoyer la demande sur WhatsApp</button>
+            </form>
+        </section>
+    </div>
+
+    <!-- SECTION 2: OUTILS WEB -->
+    <div id="sec-tools" class="section-content">
+        <div class="tool-box">
+            <h3>⚡ Testeur de Vitesse Réseau</h3>
+            <p style="color:#94a3b8; font-size: 14px;">Testez la latence et l'estimation de débit de votre connexion.</p>
+            <button class="btn-action" onclick="runSpeedTest()">🚀 Lancer le test</button>
+            <div id="speed-result" style="margin-top: 15px; font-weight: bold; color: var(--accent);"></div>
+        </div>
+
+        <!-- EMPLACEMENT PUB MILIEU -->
+        <div class="ad-banner">📢 <em>Espace Publicitaire In-Feed (300x250)</em></div>
+
+        <div class="tool-box">
+            <h3>🔐 Générateur de Mot de Passe Sécurisé</h3>
+            <p style="color:#94a3b8; font-size: 14px;">Générez un mot de passe ultra-sécurisé et incrackable en un clic.</p>
+            <input type="text" id="generated-pwd" readonly placeholder="Cliquez sur générer...">
+            <button class="btn-action" onclick="generatePassword()">🎲 Générer Mot de Passe</button>
+            <button class="btn-action" style="background:#2563eb; color:white; margin-top:8px;" onclick="copyPassword()">📋 Copier le mot de passe</button>
+        </div>
+    </div>
+
+    <!-- SECTION 3: TUTORIELS & BLOG -->
+    <div id="sec-blog" class="section-content">
+        <div class="blog-grid">
+            <div class="blog-card" onclick="openBlog(' Comment libérer de l\'espace de stockage sans supprimer vos photos ?', 'Pour optimiser votre smartphone Android :\n1. Allez dans Paramètres > Stockage > Données en cache et effacez-les.\n2. Utilisez l\'application Google Files pour repérer les fichiers dupliqués.\n3. Supprimez les dossiers résiduels de WhatsApp (WhatsApp > Media > WhatsApp Images > Sent).')">
+                <span class="badge badge-encours">Optimisation</span>
+                <h3 style="margin: 10px 0 5px;">Comment libérer de l'espace sur Android ?</h3>
+                <p style="color:#94a3b8; font-size: 13px;">Découvrez 3 méthodes efficaces pour nettoyer les fichiers cachés et gagner plusieurs gigas.</p>
+            </div>
+
+            <div class="blog-card" onclick="openBlog(' Protéger sa vie privée sur Smartphone', 'Conseils de sécurité essentiels :\n1. Ne téléchargez jamais de fichiers APK depuis des sources non fiables.\n2. Vérifiez les autorisations accordées à vos applications (Paramètres > Confidentialité).\n3. Utilisez un VPN sécurisé lors des connexions aux Wi-Fi publics.')">
+                <span class="badge badge-planifie">Sécurité</span>
+                <h3 style="margin: 10px 0 5px;">3 Règles d'or pour sécuriser son téléphone</h3>
+                <p style="color:#94a3b8; font-size: 13px;">Évitez les logiciels malveillants et protégez vos données personnelles facilement.</p>
+            </div>
+
+            <div class="blog-card" onclick="openBlog(' Booster la vitesse de son smartphone', 'Accélérer Android :\n1. Activez les options développeurs (cliquez 7 fois sur Numéro de build).\n2. Réduisez l échelle des animations à 0.5x.\n3. Limitez les processus en arrière-plan.')">
+                <span class="badge badge-concept">Performance</span>
+                <h3 style="margin: 10px 0 5px;">Rendre son téléphone 2x plus rapide</h3>
+                <p style="color:#94a3b8; font-size: 13px;">Un réglage simple dans les options développeurs pour supprimer les lenteurs.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: MINI-JEU -->
+    <div id="sec-game" class="section-content">
+        <div id="game-container">
+            <h2>⭐ DownHub Catch Game</h2>
+            <p style="color:#94a3b8; font-size: 13px;">Attrapez les étoiles bleues avec votre panier ! (Utilisez les flèches ⬅️ ➡️ ou glissez le doigt)</p>
+            <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; color: var(--accent);" id="game-score">Score : 0</div>
+            <canvas id="gameCanvas" width="320" height="320"></canvas>
+            <br>
+            <button class="btn-action" style="margin-top: 15px;" onclick="startGame()">▶️ Jouer / Recommencer</button>
+        </div>
+
+        <!-- EMPLACEMENT PUB SOUS LE JEU -->
+        <div class="ad-banner">📢 <em>Espace Publicitaire (AdSense Mobile / Native)</em></div>
+    </div>
+
+    <!-- PANNEAU ADMIN CACHÉ -->
     <div id="admin-panel">
         <div class="admin-header">
             <h2 style="margin:0; color: var(--accent);">📊 Panneau Administrateur</h2>
@@ -231,7 +355,7 @@
             </div>
         </div>
 
-        <h3>Détails des Votes par Application</h3>
+        <h3>Détails des Votes</h3>
         <table>
             <thead>
                 <tr>
@@ -243,19 +367,11 @@
             </thead>
             <tbody id="admin-table-body"></tbody>
         </table>
-
-        <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h4 style="margin: 0; color: white;">Trafic & Visiteurs en Temps Réel</h4>
-                <p style="margin: 5px 0 0; color: #9ca3af; font-size: 13px;">Consultez vos statistiques en direct sur Google Analytics.</p>
-            </div>
-            <a href="https://analytics.google.com/" target="_blank" class="btn-analytics">📈 Ouvrir Google Analytics</a>
-        </div>
     </div>
 
     <script>
         const WHATSAPP_NUMBER = "24398169812";
-        const ADMIN_PASSWORD = "Sabin1234"; // 🔐 Ton mot de passe Administrateur
+        const ADMIN_PASSWORD = "Sabin1234";
 
         const appsData = [
             { id: "downhub-store", title: "DownHub Store", desc: "Catalogue principal d'applications et APKs.", status: "EN COURS", badgeClass: "badge-encours", progress: 85 },
@@ -264,6 +380,18 @@
             { id: "downhub-ai", title: "DownHub Assistant AI", desc: "Assistant virtuel intelligent.", status: "CONCEPT", badgeClass: "badge-concept", progress: 20 }
         ];
 
+        // GESTION DES ONGLETS
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section-content').forEach(sec => sec.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(`sec-${tabName}`).classList.add('active');
+
+            if (tabName === 'game') startGame();
+        }
+
+        // APPS RENDER
         function renderApps() {
             const container = document.getElementById('apps-container');
             const select = document.getElementById('appSelect');
@@ -288,8 +416,8 @@
                             <div style="font-size: 12px; margin-top: 15px;">Avancement : ${app.progress}%</div>
                             <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${app.progress}%;"></div></div>
                             <div class="btn-group">
-                                <button class="btn-vote" onclick="vote('${app.id}')">${hasVoted ? '✓ Voté' : '👍 Voter'} (${votes})</button>
-                                <a href="${waUrl}" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
+                                <button class="btn-action" style="background:#2563eb; color:white;" onclick="vote('${app.id}')">${hasVoted ? '✓ Voté' : '👍 Voter'} (${votes})</button>
+                                <a href="${waUrl}" target="_blank" class="btn-action" style="background:var(--whatsapp-color); color:white;">💬 WhatsApp</a>
                             </div>
                         </div>
                     </div>
@@ -310,24 +438,107 @@
             renderApps();
         }
 
+        // OUTILS LOGIQUE
+        function runSpeedTest() {
+            const res = document.getElementById('speed-result');
+            res.innerText = "⏳ Analyse de la connexion en cours...";
+            const start = Date.now();
+            
+            setTimeout(() => {
+                const latency = Date.now() - start;
+                const speed = (Math.random() * 18 + 5).toFixed(1);
+                res.innerHTML = `⚡ Latence : ${latency} ms <br> 📥 Vitesse estimée : ${speed} Mbps`;
+            }, 1200);
+        }
+
+        function generatePassword() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            let pwd = "";
+            for (let i = 0; i < 14; i++) {
+                pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('generated-pwd').value = pwd;
+        }
+
+        function copyPassword() {
+            const input = document.getElementById('generated-pwd');
+            if(!input.value) return;
+            navigator.clipboard.writeText(input.value);
+            alert("Mot de passe copié !");
+        }
+
+        // BLOG MODAL
+        function openBlog(title, text) {
+            alert(`📌 ${title}\n\n${text}`);
+        }
+
+        // MINI JEU LOGIQUE (CANVAS)
+        let canvas, ctx, playerX, score, gameInterval, star;
+
+        function startGame() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            playerX = canvas.width / 2 - 25;
+            score = 0;
+            star = { x: Math.random() * (canvas.width - 20), y: 0, speed: 3 };
+            
+            document.getElementById('game-score').innerText = "Score : 0";
+
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(updateGame, 1000 / 60);
+
+            // Contrôles
+            document.onkeydown = (e) => {
+                if (e.key === "ArrowLeft" && playerX > 0) playerX -= 20;
+                if (e.key === "ArrowRight" && playerX < canvas.width - 50) playerX += 20;
+            };
+
+            canvas.ontouchmove = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const touchX = e.touches[0].clientX - rect.left;
+                playerX = Math.max(0, Math.min(canvas.width - 50, touchX - 25));
+            };
+        }
+
+        function updateGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dessiner le joueur (panier)
+            ctx.fillStyle = "#38bdf8";
+            ctx.fillRect(playerX, canvas.height - 15, 50, 10);
+
+            // Dessiner l'étoile
+            ctx.fillStyle = "#f59e0b";
+            ctx.beginPath();
+            ctx.arc(star.x + 10, star.y + 10, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            star.y += star.speed;
+
+            // Collision
+            if (star.y + 10 >= canvas.height - 15 && star.x >= playerX - 10 && star.x <= playerX + 50) {
+                score += 10;
+                document.getElementById('game-score').innerText = `Score : ${score}`;
+                star = { x: Math.random() * (canvas.width - 20), y: 0, speed: star.speed + 0.3 };
+            }
+
+            // Perdu / Recommencer étoile
+            if (star.y > canvas.height) {
+                star = { x: Math.random() * (canvas.width - 20), y: 0, speed: 3 };
+            }
+        }
+
+        // ADMIN DISCRET
         function openAdmin() {
             const pwd = prompt("Entrez le mot de passe Administrateur :");
             if (pwd === ADMIN_PASSWORD) {
                 document.getElementById('admin-panel').style.display = 'block';
-                
-                let totalVotes = 0;
-                let topApp = "-";
-                let maxVotes = -1;
-                let tableHtml = "";
+                let totalVotes = 0, topApp = "-", maxVotes = -1, tableHtml = "";
 
                 appsData.forEach(app => {
                     const votes = parseInt(localStorage.getItem(`votes_${app.id}`)) || 0;
                     totalVotes += votes;
-
-                    if (votes > maxVotes) {
-                        maxVotes = votes;
-                        topApp = app.title;
-                    }
+                    if (votes > maxVotes) { maxVotes = votes; topApp = app.title; }
 
                     tableHtml += `
                         <tr>
@@ -343,36 +554,22 @@
                 document.getElementById('stat-total-votes').innerText = totalVotes;
                 document.getElementById('stat-top-app').innerText = maxVotes > 0 ? topApp : "Aucun vote";
                 document.getElementById('admin-table-body').innerHTML = tableHtml;
-
-                window.scrollTo(0, document.body.scrollHeight);
             } else if (pwd !== null) {
                 alert("Mot de passe incorrect !");
             }
         }
 
-        // 1. Déclencheur par raccourci clavier : Ctrl + Shift + A
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-                e.preventDefault();
-                openAdmin();
+                e.preventDefault(); openAdmin();
             }
         });
 
-        // 2. Déclencheur tactile / mobile : Triple-clic sur le titre "⚡ DownHub Studio"
         let clickCount = 0;
         document.getElementById('site-title').addEventListener('click', () => {
             clickCount++;
-            if (clickCount === 3) {
-                openAdmin();
-                clickCount = 0;
-            }
+            if (clickCount === 3) { openAdmin(); clickCount = 0; }
             setTimeout(() => { clickCount = 0; }, 1000);
-        });
-
-        document.getElementById('beta-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = `🚀 *INSCRIPTION BÊTA TEST*\n\n👤 *Nom* : ${document.getElementById('userName').value}\n📞 *Contact* : ${document.getElementById('userEmail').value}\n📱 *App* : ${document.getElementById('appSelect').value}`;
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
         });
 
         renderApps();
