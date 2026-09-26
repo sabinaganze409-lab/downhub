@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DownHub Studio — Plateforme Officielle</title>
 
-    <!-- 1. GOOGLE ANALYTICS (Remplace G-XXXXXXXXXX par ton ID de mesure Google Analytics) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-770R1VEX1R"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-XXXXXXXXXX');
+      gtag('config', 'G-770R1VEX1R');
     </script>
 
     <style>
@@ -129,7 +129,7 @@
             font-weight: bold;
         }
 
-        /* --- STYLES DU TABLEAU ADMIN --- */
+        /* --- STYLES TABLEAU ADMIN --- */
         .admin-trigger-container { text-align: center; margin-top: 50px; }
         .admin-btn-trigger {
             background: rgba(255, 255, 255, 0.05);
@@ -221,12 +221,12 @@
         </form>
     </section>
 
-    <!-- Bouton discret pour ouvrir le Dashboard Admin -->
+    <!-- Bouton discret d'accès Admin -->
     <div class="admin-trigger-container">
         <button class="admin-btn-trigger" onclick="openAdmin()">⚙️ Espace Administrateur</button>
     </div>
 
-    <!-- DASHBOARD ADMIN DESIGN -->
+    <!-- DASHBOARD ADMIN -->
     <div id="admin-panel">
         <div class="admin-header">
             <h2 style="margin:0; color: var(--accent);">📊 Panneau Administrateur</h2>
@@ -264,7 +264,7 @@
         <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h4 style="margin: 0; color: white;">Trafic & Visiteurs en Temps Réel</h4>
-                <p style="margin: 5px 0 0; color: #9ca3af; font-size: 13px;">Consultez les visites directes sur votre compte Google Analytics.</p>
+                <p style="margin: 5px 0 0; color: #9ca3af; font-size: 13px;">Consultez vos statistiques en direct sur Google Analytics.</p>
             </div>
             <a href="https://analytics.google.com/" target="_blank" class="btn-analytics">📈 Ouvrir Google Analytics</a>
         </div>
@@ -272,7 +272,7 @@
 
     <script>
         const WHATSAPP_NUMBER = "24398169812";
-        const ADMIN_PASSWORD = "Sabin1234"; // 🔐 Ton mot de passe d'administration
+        const ADMIN_PASSWORD = "Sabin1234"; // Mot de passe pour accéder au panneau d'administration
 
         const appsData = [
             { id: "downhub-store", title: "DownHub Store", desc: "Catalogue principal d'applications et APKs.", status: "EN COURS", badgeClass: "badge-encours", progress: 85 },
