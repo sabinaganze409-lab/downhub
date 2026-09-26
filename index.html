@@ -39,7 +39,7 @@
         }
 
         header { text-align: center; padding: 30px 0 10px; }
-        header h1 { color: var(--accent); margin: 0 0 10px 0; font-size: 2.2rem; }
+        header h1 { color: var(--accent); margin: 0 0 10px 0; font-size: 2.2rem; cursor: pointer; user-select: none; }
         header p { color: #94a3b8; margin: 0; }
 
         .container {
@@ -129,20 +129,7 @@
             font-weight: bold;
         }
 
-        /* --- STYLES TABLEAU ADMIN --- */
-        .admin-trigger-container { text-align: center; margin-top: 50px; }
-        .admin-btn-trigger {
-            background: rgba(255, 255, 255, 0.05);
-            color: #94a3b8;
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s;
-        }
-        .admin-btn-trigger:hover { color: var(--accent); border-color: var(--accent); }
-
+        /* --- DASHBOARD ADMIN CACHÉ --- */
         #admin-panel {
             display: none;
             background: #111827;
@@ -205,7 +192,8 @@
 <body>
 
     <header>
-        <h1>⚡ DownHub Studio</h1>
+        <!-- Un triple clic sur le titre ouvrira le panneau admin -->
+        <h1 id="site-title" title="DownHub Studio">⚡ DownHub Studio</h1>
         <p>Applications & Développements en cours</p>
     </header>
 
@@ -221,16 +209,11 @@
         </form>
     </section>
 
-    <!-- Bouton discret d'accès Admin -->
-    <div class="admin-trigger-container">
-        <button class="admin-btn-trigger" onclick="openAdmin()">⚙️ Espace Administrateur</button>
-    </div>
-
-    <!-- DASHBOARD ADMIN -->
+    <!-- DASHBOARD ADMIN (MASQUÉ DE BASE) -->
     <div id="admin-panel">
         <div class="admin-header">
             <h2 style="margin:0; color: var(--accent);">📊 Panneau Administrateur</h2>
-            <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer;">✕ Fermer</button>
+            <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size: 18px;">✕ Fermer</button>
         </div>
 
         <div class="admin-grid">
@@ -272,7 +255,7 @@
 
     <script>
         const WHATSAPP_NUMBER = "24398169812";
-        const ADMIN_PASSWORD = "Sabin1234"; // Mot de passe pour accéder au panneau d'administration
+        const ADMIN_PASSWORD = "Sabin1234"; // 🔐 Ton mot de passe Administrateur
 
         const appsData = [
             { id: "downhub-store", title: "DownHub Store", desc: "Catalogue principal d'applications et APKs.", status: "EN COURS", badgeClass: "badge-encours", progress: 85 },
@@ -366,6 +349,25 @@
                 alert("Mot de passe incorrect !");
             }
         }
+
+        // 1. Déclencheur par raccourci clavier : Ctrl + Shift + A
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+                openAdmin();
+            }
+        });
+
+        // 2. Déclencheur tactile / mobile : Triple-clic sur le titre "⚡ DownHub Studio"
+        let clickCount = 0;
+        document.getElementById('site-title').addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 3) {
+                openAdmin();
+                clickCount = 0;
+            }
+            setTimeout(() => { clickCount = 0; }, 1000);
+        });
 
         document.getElementById('beta-form').addEventListener('submit', (e) => {
             e.preventDefault();
