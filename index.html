@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DownHub Studio — Plateforme Officielle</title>
+
+    <!-- 1. GOOGLE ANALYTICS (Remplace G-XXXXXXXXXX par ton ID de mesure Google Analytics) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
     <style>
         :root {
             --bg-color: #0b1120;
@@ -11,7 +22,7 @@
             --accent: #38bdf8;
             --whatsapp-color: #25d366;
             --text-color: #f8fafc;
-            --border-color: #1e293b;
+            --border-color: rgba(255, 255, 255, 0.08);
         }
 
         body {
@@ -19,8 +30,7 @@
             background-color: var(--bg-color);
             background-image: 
                 radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(37, 211, 102, 0.08) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.5) 0px, transparent 100%);
+                radial-gradient(at 100% 100%, rgba(37, 211, 102, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text-color);
             margin: 0;
@@ -28,98 +38,38 @@
             min-height: 100vh;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 0 20px;
-        }
-
-        header h1 {
-            color: var(--accent);
-            font-size: 2.2rem;
-            margin: 0 0 10px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-        }
-
-        header p {
-            color: #94a3b8;
-            margin: 0;
-            font-size: 1.05rem;
-        }
+        header { text-align: center; padding: 30px 0 10px; }
+        header h1 { color: var(--accent); margin: 0 0 10px 0; font-size: 2.2rem; }
+        header p { color: #94a3b8; margin: 0; }
 
         .container {
             max-width: 1100px;
-            margin: 40px auto;
+            margin: 30px auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .card {
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
             border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border: 1px solid var(--border-color);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(56, 189, 248, 0.3);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .card h3 {
-            color: #ffffff;
-            margin: 0;
-            font-size: 1.25rem;
         }
 
         .badge {
-            padding: 4px 10px;
+            padding: 4px 8px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: bold;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
         }
-
-        .badge-encours { background-color: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #38bdf8; }
-        .badge-planifie { background-color: rgba(251, 146, 60, 0.15); color: #fb923c; border: 1px solid #fb923c; }
-        .badge-concept { background-color: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid #a855f7; }
-
-        .card p {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin: 0 0 20px 0;
-        }
-
-        .progress-section {
-            margin-bottom: 20px;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            margin-bottom: 8px;
-        }
+        .badge-encours { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+        .badge-planifie { background: rgba(251, 146, 60, 0.2); color: #fb923c; border: 1px solid #fb923c; }
+        .badge-concept { background: rgba(168, 85, 247, 0.2); color: #a855f7; border: 1px solid #a855f7; }
 
         .progress-bar-bg {
             background-color: #0b1220;
@@ -127,279 +77,303 @@
             height: 10px;
             width: 100%;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            margin-top: 8px;
+            border: 1px solid #1e293b;
         }
 
-        .progress-bar-fill {
-            background-color: var(--accent);
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.4s ease;
-        }
+        .progress-bar-fill { background-color: var(--accent); height: 100%; border-radius: 10px; }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
 
-        .btn-vote {
-            background-color: #2563eb;
-            color: white;
+        .btn-vote, .btn-whatsapp {
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
             border: none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-weight: 600;
             cursor: pointer;
-            flex: 1;
-            transition: background-color 0.2s;
-        }
-
-        .btn-vote:hover { background-color: #1d4ed8; }
-
-        .btn-whatsapp-card {
-            background-color: var(--whatsapp-color);
-            color: white;
-            text-decoration: none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-weight: 600;
             text-align: center;
+            text-decoration: none;
             flex: 1;
-            transition: background-color 0.2s;
         }
-
-        .btn-whatsapp-card:hover { background-color: #1eb854; }
+        .btn-vote { background: #2563eb; color: white; }
+        .btn-whatsapp { background: var(--whatsapp-color); color: white; }
 
         .form-section {
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
             border-radius: 16px;
-            padding: 30px;
-            max-width: 650px;
-            margin: 40px auto;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            padding: 25px;
+            max-width: 600px;
+            margin: 30px auto;
+            border: 1px solid var(--border-color);
         }
 
-        .form-section h2 {
-            color: #ffffff;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            color: #cbd5e1;
-            font-size: 0.9rem;
-        }
-
-        input, textarea, select {
+        input, select {
             width: 100%;
             padding: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 15px;
             border-radius: 8px;
             border: 1px solid #334155;
-            background-color: rgba(11, 18, 32, 0.8);
+            background: rgba(11, 18, 32, 0.8);
             color: white;
             box-sizing: border-box;
-            font-size: 0.95rem;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--accent);
         }
 
         .btn-submit {
             background-color: var(--whatsapp-color);
             color: white;
             border: none;
-            padding: 14px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-size: 1rem;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background-color 0.2s;
         }
 
-        .btn-submit:hover { background-color: #1eb854; }
+        /* --- STYLES DU TABLEAU ADMIN --- */
+        .admin-trigger-container { text-align: center; margin-top: 50px; }
+        .admin-btn-trigger {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        .admin-btn-trigger:hover { color: var(--accent); border-color: var(--accent); }
+
+        #admin-panel {
+            display: none;
+            background: #111827;
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: #1f2937;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #374151;
+        }
+        .stat-box h4 { margin: 0; color: #9ca3af; font-size: 13px; }
+        .stat-box .number { font-size: 24px; font-weight: bold; color: var(--accent); margin-top: 5px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1f2937;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #374151; }
+        th { background: #111827; color: var(--accent); font-size: 14px; }
+
+        .btn-analytics {
+            display: inline-block;
+            background: #f59e0b;
+            color: #000;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
     <header>
         <h1>⚡ DownHub Studio</h1>
-        <p>Projets en développement & Interactions en direct</p>
+        <p>Applications & Développements en cours</p>
     </header>
 
-    <!-- LISTE DES APPLICATIONS -->
-    <main class="container" id="apps-container">Chargement des projets...</main>
+    <main class="container" id="apps-container"></main>
 
-    <!-- FORMULAIRE BÊTA-TEST -->
     <section class="form-section">
         <h2>🚀 Devenir Bêta-Testeur</h2>
         <form id="beta-form">
-            <label for="userName">Nom / Pseudo :</label>
-            <input type="text" id="userName" required placeholder="Ex: Sabin">
-
-            <label for="userEmail">Adresse Email ou Téléphone :</label>
-            <input type="text" id="userEmail" required placeholder="Email ou numéro WhatsApp">
-
-            <label for="appSelect">Application concernée :</label>
+            <input type="text" id="userName" required placeholder="Nom / Pseudo">
+            <input type="text" id="userEmail" required placeholder="Numéro WhatsApp ou Email">
             <select id="appSelect"></select>
-
-            <button type="submit" class="btn-submit">📲 S'inscrire & Envoyer via WhatsApp</button>
+            <button type="submit" class="btn-submit">📲 Envoyer la demande sur WhatsApp</button>
         </form>
     </section>
 
-    <!-- FORMULAIRE SUGGESTION -->
-    <section class="form-section">
-        <h2>💡 Soumettre une Idée / Suggestion</h2>
-        <form id="suggestion-form">
-            <label for="sugName">Votre Nom / Pseudo :</label>
-            <input type="text" id="sugName" required placeholder="Ex: Alex">
+    <!-- Bouton discret pour ouvrir le Dashboard Admin -->
+    <div class="admin-trigger-container">
+        <button class="admin-btn-trigger" onclick="openAdmin()">⚙️ Espace Administrateur</button>
+    </div>
 
-            <label for="sugTitle">Titre de l'idée :</label>
-            <input type="text" id="sugTitle" required placeholder="Ex: Ajouter un mode sombre">
+    <!-- DASHBOARD ADMIN DESIGN -->
+    <div id="admin-panel">
+        <div class="admin-header">
+            <h2 style="margin:0; color: var(--accent);">📊 Panneau Administrateur</h2>
+            <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer;">✕ Fermer</button>
+        </div>
 
-            <label for="sugCategory">Catégorie :</label>
-            <select id="sugCategory">
-                <option value="Nouvelle Fonctionnalité">Nouvelle Fonctionnalité</option>
-                <option value="Signalement de Bug">Signalement de Bug</option>
-                <option value="Autre Projet">Idée de nouveau projet</option>
-            </select>
+        <div class="admin-grid">
+            <div class="stat-box">
+                <h4>Total Applications</h4>
+                <div class="number" id="stat-total-apps">0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Total Votes Enregistrés</h4>
+                <div class="number" id="stat-total-votes">0</div>
+            </div>
+            <div class="stat-box">
+                <h4>Application Favorite</h4>
+                <div class="number" id="stat-top-app" style="font-size: 16px;">-</div>
+            </div>
+        </div>
 
-            <label for="sugDesc">Détails de votre suggestion :</label>
-            <textarea id="sugDesc" rows="4" required placeholder="Décrivez votre idée en détail..."></textarea>
+        <h3>Détails des Votes par Application</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Application</th>
+                    <th>Statut</th>
+                    <th>Avancement</th>
+                    <th>Votes</th>
+                </tr>
+            </thead>
+            <tbody id="admin-table-body"></tbody>
+        </table>
 
-            <button type="submit" class="btn-submit">💡 Envoyer la Suggestion sur WhatsApp</button>
-        </form>
-    </section>
+        <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h4 style="margin: 0; color: white;">Trafic & Visiteurs en Temps Réel</h4>
+                <p style="margin: 5px 0 0; color: #9ca3af; font-size: 13px;">Consultez les visites directes sur votre compte Google Analytics.</p>
+            </div>
+            <a href="https://analytics.google.com/" target="_blank" class="btn-analytics">📈 Ouvrir Google Analytics</a>
+        </div>
+    </div>
 
     <script>
         const WHATSAPP_NUMBER = "24398169812";
-        // URL de l'API Node.js (remplace par ton URL d'hébergement une fois en ligne)
-        const API_URL = "http://localhost:3000/api";
+        const ADMIN_PASSWORD = "Sabin1234"; // 🔐 Ton mot de passe d'administration
 
-        // Charger les applications en direct depuis le serveur API
-        async function fetchApps() {
-            try {
-                const res = await fetch(`${API_URL}/apps`);
-                const appsData = await res.json();
+        const appsData = [
+            { id: "downhub-store", title: "DownHub Store", desc: "Catalogue principal d'applications et APKs.", status: "EN COURS", badgeClass: "badge-encours", progress: 85 },
+            { id: "downhub-filemanager", title: "Gestionnaire de Fichiers", desc: "Explorateur de fichiers rapide et sécurisé.", status: "EN COURS", badgeClass: "badge-encours", progress: 65 },
+            { id: "downhub-vpn", title: "DownHub VPN", desc: "Connexion réseau privée et rapide.", status: "PLANIFIÉ", badgeClass: "badge-planifie", progress: 40 },
+            { id: "downhub-ai", title: "DownHub Assistant AI", desc: "Assistant virtuel intelligent.", status: "CONCEPT", badgeClass: "badge-concept", progress: 20 }
+        ];
 
-                const container = document.getElementById('apps-container');
-                const select = document.getElementById('appSelect');
+        function renderApps() {
+            const container = document.getElementById('apps-container');
+            const select = document.getElementById('appSelect');
+            container.innerHTML = "";
+            select.innerHTML = "";
 
-                container.innerHTML = "";
-                select.innerHTML = "";
+            appsData.forEach(app => {
+                const votes = parseInt(localStorage.getItem(`votes_${app.id}`)) || 0;
+                const hasVoted = localStorage.getItem(`voted_${app.id}`);
+                const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Bonjour ! Je vous contacte au sujet de : ${app.title}`)}`;
 
-                appsData.forEach(app => {
-                    const msg = encodeURIComponent(`Bonjour ! Je vous contacte au sujet de l'application ${app.title}.`);
-                    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
+                container.innerHTML += `
+                    <div class="card">
                         <div>
-                            <div class="card-header">
-                                <h3>${app.title}</h3>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <h3 style="margin:0;">${app.title}</h3>
                                 <span class="badge ${app.badgeClass}">${app.status}</span>
                             </div>
-                            <p>${app.description}</p>
+                            <p style="color:#94a3b8; font-size: 14px; margin-top: 10px;">${app.desc}</p>
                         </div>
                         <div>
-                            <div class="progress-section">
-                                <div class="progress-info">
-                                    <span>Avancement</span>
-                                    <span><strong>${app.progress}%</strong></span>
-                                </div>
-                                <div class="progress-bar-bg">
-                                    <div class="progress-bar-fill" style="width: ${app.progress}%;"></div>
-                                </div>
-                            </div>
+                            <div style="font-size: 12px; margin-top: 15px;">Avancement : ${app.progress}%</div>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${app.progress}%;"></div></div>
                             <div class="btn-group">
-                                <button class="btn-vote" onclick="sendVote('${app.id}')">👍 Voter (${app.votes})</button>
-                                <a href="${waUrl}" target="_blank" class="btn-whatsapp-card">💬 WhatsApp</a>
+                                <button class="btn-vote" onclick="vote('${app.id}')">${hasVoted ? '✓ Voté' : '👍 Voter'} (${votes})</button>
+                                <a href="${waUrl}" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
                             </div>
                         </div>
+                    </div>
+                `;
+
+                select.innerHTML += `<option value="${app.title}">${app.title}</option>`;
+            });
+        }
+
+        function vote(appId) {
+            if (localStorage.getItem(`voted_${appId}`)) {
+                alert("Vous avez déjà voté pour cette application !");
+                return;
+            }
+            let currentVotes = parseInt(localStorage.getItem(`votes_${appId}`)) || 0;
+            localStorage.setItem(`votes_${appId}`, currentVotes + 1);
+            localStorage.setItem(`voted_${appId}`, "true");
+            renderApps();
+        }
+
+        function openAdmin() {
+            const pwd = prompt("Entrez le mot de passe Administrateur :");
+            if (pwd === ADMIN_PASSWORD) {
+                document.getElementById('admin-panel').style.display = 'block';
+                
+                let totalVotes = 0;
+                let topApp = "-";
+                let maxVotes = -1;
+                let tableHtml = "";
+
+                appsData.forEach(app => {
+                    const votes = parseInt(localStorage.getItem(`votes_${app.id}`)) || 0;
+                    totalVotes += votes;
+
+                    if (votes > maxVotes) {
+                        maxVotes = votes;
+                        topApp = app.title;
+                    }
+
+                    tableHtml += `
+                        <tr>
+                            <td><strong>${app.title}</strong></td>
+                            <td><span class="badge ${app.badgeClass}">${app.status}</span></td>
+                            <td>${app.progress}%</td>
+                            <td>👍 <strong>${votes}</strong></td>
+                        </tr>
                     `;
-                    container.appendChild(card);
-
-                    const option = document.createElement('option');
-                    option.value = app.title;
-                    option.textContent = app.title;
-                    select.appendChild(option);
                 });
-            } catch (err) {
-                document.getElementById('apps-container').innerHTML = "<p style='text-align:center;'>Connexion au serveur API en cours ou indisponible...</p>";
+
+                document.getElementById('stat-total-apps').innerText = appsData.length;
+                document.getElementById('stat-total-votes').innerText = totalVotes;
+                document.getElementById('stat-top-app').innerText = maxVotes > 0 ? topApp : "Aucun vote";
+                document.getElementById('admin-table-body').innerHTML = tableHtml;
+
+                window.scrollTo(0, document.body.scrollHeight);
+            } else if (pwd !== null) {
+                alert("Mot de passe incorrect !");
             }
         }
 
-        // Envoyer le vote au serveur (Bloqué par IP si doublon)
-        async function sendVote(appId) {
-            try {
-                const res = await fetch(`${API_URL}/vote`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ appId })
-                });
-
-                const data = await res.json();
-                alert(data.message || data.error);
-                fetchApps(); // Recharger la liste pour afficher le compteur mis à jour
-            } catch (err) {
-                alert("Impossible d'enregistrer le vote.");
-            }
-        }
-
-        // Envoi Bêta-Test -> WhatsApp
         document.getElementById('beta-form').addEventListener('submit', (e) => {
             e.preventDefault();
-
-            const name = document.getElementById('userName').value;
-            const contact = document.getElementById('userEmail').value;
-            const appName = document.getElementById('appSelect').value;
-
-            const text = `🚀 *NOUVELLE INSCRIPTION BÊTA TEST*\n\n` +
-                         `👤 *Nom* : ${name}\n` +
-                         `📞 *Contact* : ${contact}\n` +
-                         `📱 *Application* : ${appName}`;
-
+            const text = `🚀 *INSCRIPTION BÊTA TEST*\n\n👤 *Nom* : ${document.getElementById('userName').value}\n📞 *Contact* : ${document.getElementById('userEmail').value}\n📱 *App* : ${document.getElementById('appSelect').value}`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-            document.getElementById('beta-form').reset();
         });
 
-        // Envoi Suggestion -> WhatsApp
-        document.getElementById('suggestion-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById('sugName').value;
-            const title = document.getElementById('sugTitle').value;
-            const category = document.getElementById('sugCategory').value;
-            const description = document.getElementById('sugDesc').value;
-
-            const text = `💡 *NOUVELLE SUGGESTION UTILISATEUR*\n\n` +
-                         `👤 *De* : ${name}\n` +
-                         `📌 *Titre* : ${title}\n` +
-                         `🏷️ *Catégorie* : ${category}\n` +
-                         `📝 *Message* :\n${description}`;
-
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-            document.getElementById('suggestion-form').reset();
-        });
-
-        // Chargement initial au démarrage
-        fetchApps();
+        renderApps();
     </script>
 </body>
 </html>
