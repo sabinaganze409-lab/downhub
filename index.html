@@ -11,37 +11,68 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-770R1VEX1R');
     </script>
+
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
             --bg-color: #070b14;
             --card-bg: rgba(15, 23, 42, 0.75);
             --card-border: rgba(255, 255, 255, 0.1);
-            --accent-cyan: #38bdf8;
-            --accent-blue: #3b82f6;
-            --accent-purple: #8b5cf6;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #8b5cf6;
             --whatsapp-color: #25d366;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
         }
 
-        /* ANIMATION DU FOND DU SITE (GRADIENT WAVE) */
+        /* THÈMES COULEURS SYSTEM */
+        body.theme-purple { --accent-primary: #a855f7; --accent-secondary: #ec4899; }
+        body.theme-green { --accent-primary: #10b981; --accent-secondary: #3b82f6; }
+        body.theme-orange { --accent-primary: #f97316; --accent-secondary: #eab308; }
+
+        /* CURSEUR LUMINEUX CUSTOM */
+        #custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            z-index: 9999;
+            box-shadow: 0 0 12px var(--accent-primary);
+        }
+        #custom-cursor.hovered {
+            width: 40px;
+            height: 40px;
+            background: rgba(56, 189, 248, 0.15);
+        }
+
+        /* CANVAS PARTICULES EN ARRIÈRE-PLAN */
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
             background-color: var(--bg-color);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.18) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.18) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.8) 0px, transparent 100%);
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
             background-size: 150% 150%;
             animation: bgGradientMove 12s ease infinite alternate;
             background-attachment: fixed;
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -51,10 +82,11 @@
             100% { background-position: 100% 50%; }
         }
 
-        /* HEADER */
         header {
             text-align: center;
-            padding: 40px 20px 20px;
+            padding: 30px 20px 10px;
+            position: relative;
+            z-index: 1;
         }
 
         header h1 {
@@ -64,26 +96,37 @@
             letter-spacing: -1px;
             cursor: pointer;
             user-select: none;
-            transition: transform 0.3s ease;
-        }
-
-        header h1:hover {
-            transform: scale(1.03);
         }
 
         header h1 span {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* HERO BANNER AVEC EFFET REFLET GLASSMORPHISM */
+        /* THÈME SWITCHER BOUTONS */
+        .theme-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .theme-dot {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: transform 0.2s;
+        }
+        .theme-dot:hover { transform: scale(1.2); }
+
+        /* HERO BANNER AVEC TYPEWRITER */
         .hero-banner {
             max-width: 1100px;
             margin: 20px auto;
             height: 220px;
             border-radius: 20px;
-            background: linear-gradient(rgba(7, 11, 20, 0.4), rgba(7, 11, 20, 0.9)), 
+            background: linear-gradient(rgba(7, 11, 20, 0.5), rgba(7, 11, 20, 0.9)), 
                         url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
             display: flex;
             flex-direction: column;
@@ -95,43 +138,31 @@
             border: 1px solid var(--card-border);
             backdrop-filter: blur(5px);
             position: relative;
-            overflow: hidden;
-        }
-
-        .hero-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: rotate(25deg) translateX(-100%);
-            animation: sweepLight 8s infinite ease-in-out;
-        }
-
-        @keyframes sweepLight {
-            0% { transform: rotate(25deg) translateX(-100%); }
-            20% { transform: rotate(25deg) translateX(100%); }
-            100% { transform: rotate(25deg) translateX(100%); }
-        }
-
-        .hero-banner h2 {
-            font-size: 2rem;
-            margin: 0 0 10px 0;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
             z-index: 1;
         }
 
-        .hero-banner p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0;
-            z-index: 1;
-        }
+        .hero-banner h2 { font-size: 2rem; margin: 0 0 10px 0; }
+        .hero-banner p { color: var(--text-muted); font-size: 1.1rem; min-height: 1.5em; }
 
-        /* BLOCS DE NAVIGATION EN HAUT */
+        /* CHIFFRES VIVANTS / STATS ACCUEIL */
+        .stats-counter-bar {
+            max-width: 1100px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 0 20px;
+            position: relative; z-index: 1;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 15px; border-radius: 14px;
+            text-align: center; backdrop-filter: blur(10px);
+        }
+        .stat-card .val { font-size: 24px; font-weight: bold; color: var(--accent-primary); }
+
+        /* BLOCS DE NAVIGATION */
         .navigation-blocks {
             max-width: 1100px;
             margin: 30px auto;
@@ -139,413 +170,130 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
+            position: relative; z-index: 1;
         }
 
         .nav-card {
-            position: relative;
-            height: 140px;
-            border-radius: 16px;
-            overflow: hidden;
+            position: relative; height: 140px;
+            border-radius: 16px; overflow: hidden;
             border: 1px solid var(--card-border);
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .nav-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
+        .nav-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
         .nav-card-overlay {
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(to top, rgba(7, 11, 20, 0.95) 10%, rgba(7, 11, 20, 0.3));
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 15px;
-            transition: background 0.3s ease;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 15px;
         }
 
-        .nav-card h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--text-main);
-            transition: color 0.3s, transform 0.3s;
-        }
+        .nav-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--accent-primary); }
+        .nav-card:hover img { transform: scale(1.12); }
+        .nav-card.active { border: 2px solid var(--accent-primary); box-shadow: 0 0 25px var(--accent-primary); }
+        .nav-card.active h3 { color: var(--accent-primary); }
 
-        .nav-card p {
-            margin: 4px 0 0;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .nav-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.25);
-        }
-
-        .nav-card:hover img {
-            transform: scale(1.12);
-        }
-
-        .nav-card:hover h3 {
-            transform: translateX(4px);
-        }
-
-        .nav-card.active {
-            border: 2px solid var(--accent-cyan);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
-        }
-
-        .nav-card.active h3 {
-            color: var(--accent-cyan);
-        }
-
-        /* SEPARATEUR ET CONTENU PRINCIPAL */
         .content-divider {
-            max-width: 1100px;
-            margin: 40px auto 20px;
-            height: 1px;
+            max-width: 1100px; margin: 30px auto; height: 1px;
             background: linear-gradient(90deg, transparent, var(--card-border), transparent);
         }
 
-        .main-wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px 40px;
-        }
+        .main-wrapper { max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; position: relative; z-index: 1; }
 
-        /* TRANSITIONS FLUIDES ENTRE SECTIONS */
-        .section-content { 
-            display: none; 
-            opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
+        .section-content { display: none; opacity: 0; transform: translateY(15px); transition: all 0.4s ease; }
+        .section-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-        .section-content.active { 
-            display: block; 
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* RECHERCHE APPS */
+        .search-box { margin-bottom: 20px; }
+        .search-box input { width: 100%; padding: 14px 20px; font-size: 15px; }
 
-        /* ADS BANNER */
-        .ad-banner {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px dashed var(--card-border);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 12px;
-            margin: 20px 0;
-        }
-
-        /* CARTES D'APPLICATIONS */
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
+        /* APPS GRID & CARDS */
+        .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .app-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            background: var(--card-bg); border-radius: 16px; padding: 20px;
+            border: 1px solid var(--card-border); backdrop-filter: blur(12px);
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.3s, border-color 0.3s;
         }
+        .app-card:hover { transform: translateY(-5px); border-color: var(--accent-primary); }
 
-        .app-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-        }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .badge-encours { background: rgba(56, 189, 248, 0.15); color: var(--accent-primary); border: 1px solid var(--accent-primary); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* BADGES PULSANTS */
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        .progress-bar-bg { background: #0b1220; border-radius: 10px; height: 8px; width: 100%; overflow: hidden; margin-top: 8px; }
+        .progress-bar-fill { background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary)); height: 100%; width: 0%; transition: width 1.2s ease; }
 
-        .badge-encours { 
-            background: rgba(56, 189, 248, 0.15); 
-            color: var(--accent-cyan); 
-            border: 1px solid var(--accent-cyan);
-            animation: pulse-cyan 2s infinite alternate;
-        }
-
-        @keyframes pulse-cyan {
-            0% { box-shadow: 0 0 4px rgba(56, 189, 248, 0.3); }
-            100% { box-shadow: 0 0 12px rgba(56, 189, 248, 0.8); }
-        }
-
-        .badge-planifie { 
-            background: rgba(251, 146, 60, 0.15); 
-            color: #fb923c; 
-            border: 1px solid #fb923c; 
-        }
-
-        .badge-concept { 
-            background: rgba(168, 85, 247, 0.15); 
-            color: #a855f7; 
-            border: 1px solid #a855f7; 
-        }
-
-        /* BARRE DE PROGRESSION ANIMEE */
-        .progress-bar-bg {
-            background: #0b1220;
-            border-radius: 10px;
-            height: 8px;
-            width: 100%;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-
-        .progress-bar-fill { 
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); 
-            height: 100%; 
-            border-radius: 10px;
-            width: 0%;
-            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        /* BOUTONS AVEC EFFET RIPPLE / REFLET AU SURVOL */
         .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-
         .btn-action {
-            position: relative;
-            overflow: hidden;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            flex: 1;
-            background: var(--accent-cyan);
-            color: #000;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative; overflow: hidden; padding: 12px; border-radius: 10px;
+            font-weight: 600; border: none; cursor: pointer; text-align: center; text-decoration: none;
+            flex: 1; background: var(--accent-primary); color: #000; transition: all 0.2s;
         }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 6px 15px var(--accent-primary); }
 
-        .btn-action::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transform: rotate(30deg) translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .btn-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(56, 189, 248, 0.3);
-        }
-
-        .btn-action:hover::after {
-            transform: rotate(30deg) translateX(100%);
-        }
-
-        .btn-action:active {
-            transform: scale(0.97);
-        }
-
-        /* OUTILS ET TUTOS */
-        .tool-box {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .blog-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
-            cursor: pointer;
-            backdrop-filter: blur(12px);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-        
-        .blog-card:hover { 
-            transform: translateY(-6px); 
-            border-color: var(--accent-cyan); 
-        }
+        /* OUTILS WEB */
+        .tool-box { background: var(--card-bg); border-radius: 16px; padding: 25px; border: 1px solid var(--card-border); backdrop-filter: blur(12px); max-width: 600px; margin: 20px auto; }
+        input, select { width: 100%; padding: 12px 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(7, 11, 20, 0.6); color: white; box-sizing: border-box; outline: none; }
 
         /* GAME */
-        #game-container {
-            text-align: center;
-            max-width: 450px;
-            margin: 20px auto;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-        }
-        canvas {
-            background: #030712;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-            width: 100%;
-            max-width: 350px;
-            touch-action: none;
-        }
+        #game-container { text-align: center; max-width: 450px; margin: 20px auto; background: var(--card-bg); padding: 25px; border-radius: 20px; border: 1px solid var(--card-border); }
+        canvas { background: #030712; border-radius: 12px; border: 1px solid var(--card-border); width: 100%; max-width: 350px; touch-action: none; }
 
-        /* FORM */
-        .form-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            margin: 40px auto;
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            border: 1px solid var(--card-border);
-            background: rgba(7, 11, 20, 0.6);
-            color: white;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        input:focus, select:focus { border-color: var(--accent-cyan); }
-
-        /* MASCOTTE ANIMÉE D'ACCUEIL (DOWNY) */
-        #mascot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 999;
-            display: flex;
-            align-items: flex-end;
-            gap: 12px;
-            pointer-events: none;
-        }
-
-        .mascot-dialog {
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid var(--accent-cyan);
-            color: var(--text-main);
-            padding: 12px 16px;
-            border-radius: 16px 16px 4px 16px;
-            font-size: 13px;
-            max-width: 200px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            opacity: 0;
-            transform: translateY(10px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: auto;
-        }
-
-        .mascot-dialog.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .mascot-avatar {
-            width: 75px;
-            height: 75px;
-            pointer-events: auto;
-            cursor: pointer;
-            filter: drop-shadow(0 8px 16px rgba(56, 189, 248, 0.4));
-            animation: mascotFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes mascotFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        /* SVG MASCOTTE ANIMÉE */
-        .mascot-arm-left {
-            transform-origin: 25px 45px;
-            animation: waveArm 1.8s infinite ease-in-out;
-        }
-
-        @keyframes waveArm {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(-35deg); }
-        }
-
-        .mascot-eye {
-            animation: blinkEye 4s infinite;
-            transform-origin: center;
-        }
-
-        @keyframes blinkEye {
-            0%, 90%, 100% { transform: scaleY(1); }
-            95% { transform: scaleY(0.1); }
-        }
+        /* MASCOTTE */
+        #mascot-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; align-items: flex-end; gap: 12px; pointer-events: none; }
+        .mascot-dialog { background: rgba(15, 23, 42, 0.95); border: 1px solid var(--accent-primary); color: var(--text-main); padding: 12px 16px; border-radius: 16px 16px 4px 16px; font-size: 13px; max-width: 200px; opacity: 0; transform: translateY(10px); transition: all 0.4s; pointer-events: auto; }
+        .mascot-dialog.active { opacity: 1; transform: translateY(0); }
+        .mascot-avatar { width: 75px; height: 75px; pointer-events: auto; cursor: pointer; animation: mascotFloat 3s infinite ease-in-out; }
+        @keyframes mascotFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
         /* ADMIN */
-        #admin-panel {
-            display: none;
-            background: #0f172a;
-            border: 1px solid var(--accent-cyan);
-            border-radius: 20px;
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 25px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-        }
-
-        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 15px; margin-bottom: 20px; }
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-box { background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid var(--card-border); }
-        .stat-box h4 { margin: 0; color: var(--text-muted); font-size: 12px; }
-        .stat-box .number { font-size: 22px; font-weight: bold; color: var(--accent-cyan); margin-top: 5px; }
+        #admin-panel { display: none; background: #0f172a; border: 1px solid var(--accent-primary); border-radius: 20px; max-width: 900px; margin: 30px auto; padding: 25px; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
         table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 10px; overflow: hidden; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--card-border); }
-        th { background: #0f172a; color: var(--accent-cyan); font-size: 13px; }
     </style>
 </head>
 <body>
 
+    <div id="custom-cursor"></div>
+    <canvas id="particles-canvas"></canvas>
+
     <header>
         <h1 id="site-title" title="DownHub Studio">DownHub <span>Studio</span></h1>
+        
+        <!-- THÈME SWITCHER -->
+        <div class="theme-switcher">
+            <div class="theme-dot" style="background:#38bdf8;" onclick="setTheme('')" title="Cyan Neon"></div>
+            <div class="theme-dot" style="background:#a855f7;" onclick="setTheme('theme-purple')" title="Purple Neon"></div>
+            <div class="theme-dot" style="background:#10b981;" onclick="setTheme('theme-green')" title="Emerald Green"></div>
+            <div class="theme-dot" style="background:#f97316;" onclick="setTheme('theme-orange')" title="Cyber Orange"></div>
+        </div>
     </header>
 
-    <!-- ACCUEIL BANNIÈRE CAPTIVANTE -->
+    <!-- BANNIÈRE AVEC MACHINE À ÉCRIRE -->
     <div class="hero-banner">
         <h2>L'Écosystème Digital Futuriste</h2>
-        <p>Découvrez nos applications exclusives, nos outils en ligne et nos tutoriels pour booster votre expérience mobile.</p>
+        <p id="typewriter-text"></p>
     </div>
 
-    <!-- BLOCS DE NAVIGATION EN HAUT AVEC DES IMAGES -->
+    <!-- CHIFFRES VIVANTS / STATISTIQUES ACCUEIL -->
+    <div class="stats-counter-bar">
+        <div class="stat-card">
+            <div class="val" data-target="10000">+0</div>
+            <div style="font-size:12px; color:var(--text-muted);">Téléchargements</div>
+        </div>
+        <div class="stat-card">
+            <div class="val" data-target="4">0</div>
+            <div style="font-size:12px; color:var(--text-muted);">Applications Actives</div>
+        </div>
+        <div class="stat-card">
+            <div class="val" data-target="98">0%</div>
+            <div style="font-size:12px; color:var(--text-muted);">Satisfaction</div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION EN BLOCS EN HAUT -->
     <div class="navigation-blocks">
         <div class="nav-card active" onclick="switchTab('apps', this)">
             <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=500&q=80" alt="Apps">
@@ -587,58 +335,64 @@
         
         <!-- SECTION 1: APPLICATIONS -->
         <div id="sec-apps" class="section-content active">
+            <!-- RECHERCHE D'APPLICATIONS -->
+            <div class="search-box">
+                <input type="text" id="appSearchInput" placeholder="🔍 Rechercher une application..." oninput="filterApps()">
+            </div>
+
             <div class="apps-grid" id="apps-container"></div>
 
-            <section class="form-section">
-                <h2 style="margin-top: 0;">🚀 Devenir Bêta-Testeur</h2>
+            <section class="form-section" style="background:var(--card-bg); border-radius:20px; padding:30px; margin-top:40px; border:1px solid var(--card-border);">
+                <h2 style="margin-top:0;">🚀 Devenir Bêta-Testeur</h2>
                 <form id="beta-form">
                     <input type="text" id="userName" required placeholder="Nom / Pseudo">
                     <input type="text" id="userEmail" required placeholder="Numéro WhatsApp ou Email">
                     <select id="appSelect"></select>
-                    <button type="submit" class="btn-action" style="background:var(--whatsapp-color); color:white; width: 100%;">📲 Envoyer la demande sur WhatsApp</button>
+                    <button type="submit" class="btn-action" style="background:var(--whatsapp-color); color:white; width:100%;">📲 Envoyer la demande sur WhatsApp</button>
                 </form>
             </section>
         </div>
 
         <!-- SECTION 2: OUTILS WEB -->
         <div id="sec-tools" class="section-content">
+            <!-- OUTIL 1: TESTEUR DE VITESSE -->
             <div class="tool-box">
                 <h3 style="margin-top:0;">⚡ Testeur de Vitesse Réseau</h3>
-                <p style="color:var(--text-muted); font-size: 14px;">Analyse en temps réel de votre latence et débit de téléchargement.</p>
+                <p style="color:var(--text-muted); font-size:14px;">Analyse en temps réel de votre latence et débit.</p>
                 <button class="btn-action" onclick="runSpeedTest()">Lancer le test</button>
-                <div id="speed-result" style="margin-top: 15px; font-weight: bold; color: var(--accent-cyan);"></div>
+                <div id="speed-result" style="margin-top:15px; font-weight:bold; color:var(--accent-primary);"></div>
             </div>
 
-            <div class="ad-banner">📢 Espace Publicitaire (AdSense Banner 728x90)</div>
+            <!-- OUTIL 2: GENERATEUR DE QR CODE -->
+            <div class="tool-box">
+                <h3 style="margin-top:0;">📱 Générateur de QR Code Gratuit</h3>
+                <p style="color:var(--text-muted); font-size:14px;">Entrez un lien ou du texte pour créer un QR Code instantané.</p>
+                <input type="text" id="qr-input" placeholder="https://votre-lien.com ou texte...">
+                <button class="btn-action" onclick="generateQRCode()">Générer QR Code</button>
+                <div id="qr-result" style="text-align:center; margin-top:15px;"></div>
+            </div>
 
+            <!-- OUTIL 3: GENERATEUR DE MOT DE PASSE -->
             <div class="tool-box">
                 <h3 style="margin-top:0;">🔐 Générateur de Mot de Passe</h3>
-                <p style="color:var(--text-muted); font-size: 14px;">Générez des mots de passe robustes et sécurisés.</p>
                 <input type="text" id="generated-pwd" readonly placeholder="Cliquez sur générer...">
-                <button class="btn-action" onclick="generatePassword()">Générer Mot de Passe</button>
+                <button class="btn-action" onclick="generatePassword()">Générer</button>
                 <button class="btn-action" style="background:#2563eb; color:white; margin-top:8px;" onclick="copyPassword()">Copier</button>
             </div>
         </div>
 
-        <!-- SECTION 3: TUTORIELS & BLOG -->
+        <!-- SECTION 3: TUTORIELS -->
         <div id="sec-blog" class="section-content">
-            <div class="blog-grid">
-                <div class="blog-card" onclick="openBlog(' Libérer du stockage Android', '1. Allez dans Paramètres > Stockage.\n2. Videz le cache des applications volumineuses.\n3. Supprimez les fichiers de sous-dossiers WhatsApp Media.')">
+            <div class="apps-grid">
+                <div class="app-card" onclick="openBlog(' Libérer du stockage Android', '1. Paramètres > Stockage.\n2. Videz le cache.\n3. Supprimez les fichiers lourds.')">
                     <span class="badge badge-encours">Optimisation</span>
-                    <h3 style="margin: 10px 0 5px;">Comment libérer de l\'espace sur Android ?</h3>
-                    <p style="color:var(--text-muted); font-size: 13px;">Gagnez plusieurs gigas rapidement grâce à ces méthodes simples.</p>
+                    <h3>Comment libérer de l'espace sur Android ?</h3>
+                    <p style="color:var(--text-muted); font-size:13px;">Méthodes rapides pour gagner plusieurs gigas.</p>
                 </div>
-
-                <div class="blog-card" onclick="openBlog(' Sécurité Smartphone', '1. Ne téléchargez pas d APK inconnus.\n2. Vérifiez les autorisations d accès.\n3. Utilisez un VPN sur les Wi-Fi publics.')">
-                    <span class="badge badge-planifie">Sécurité</span>
-                    <h3 style="margin: 10px 0 5px;">3 Règles d\'or pour sécuriser son téléphone</h3>
-                    <p style="color:var(--text-muted); font-size: 13px;">Mettez à l\'abri vos données personnelles des logiciels malveillants.</p>
-                </div>
-
-                <div class="blog-card" onclick="openBlog(' Accélérer Android', '1. Activez les Options Développeurs.\n2. Passez l échelle d animation de 1.0x à 0.5x.\n3. Profitez d un téléphone plus réactif.')">
-                    <span class="badge badge-concept">Performance</span>
-                    <h3 style="margin: 10px 0 5px;">Rendre son téléphone 2x plus rapide</h3>
-                    <p style="color:var(--text-muted); font-size: 13px;">Débloquez la vitesse maximale grâce à une option cachée.</p>
+                <div class="app-card" onclick="openBlog(' Sécurité Smartphone', '1. Pas d APK inconnus.\n2. Vérifiez les accès.\n3. Utilisez un VPN.')">
+                    <span class="badge">Sécurité</span>
+                    <h3>3 Règles d'or pour sécuriser son téléphone</h3>
+                    <p style="color:var(--text-muted); font-size:13px;">Protégez vos données personnelles.</p>
                 </div>
             </div>
         </div>
@@ -647,339 +401,219 @@
         <div id="sec-game" class="section-content">
             <div id="game-container">
                 <h2 style="margin-top:0;">⭐ DownHub Catch</h2>
-                <p style="color:var(--text-muted); font-size: 13px;">Attrapez les orbes lumineuses pour marquer des points !</p>
-                <div style="font-size: 20px; font-weight: bold; margin-bottom: 12px; color: var(--accent-cyan);" id="game-score">Score : 0</div>
+                <p style="color:var(--text-muted); font-size:13px;">Attrapez les orbes lumineuses !</p>
+                <div style="font-size:20px; font-weight:bold; margin-bottom:12px; color:var(--accent-primary);" id="game-score">Score : 0</div>
                 <canvas id="gameCanvas" width="320" height="320"></canvas>
                 <br>
-                <button class="btn-action" style="margin-top: 15px;" onclick="startGame()">▶️ Jouer</button>
+                <button class="btn-action" style="margin-top:15px;" onclick="startGame()">▶️ Jouer</button>
             </div>
-
-            <div class="ad-banner">📢 Espace Publicitaire (AdSense / Native Ad)</div>
         </div>
 
     </div>
 
-    <!-- MASCOTTE / BONHOMME ANIMÉ AVEC BULLE DE DIALOGUE -->
+    <!-- MASCOTTE ANIMÉE -->
     <div id="mascot-container">
         <div class="mascot-dialog" id="mascot-bubble">
-            👋 <strong>Bienvenue sur DownHub !</strong><br>Découvrez nos projets et outils futuristes.
+            👋 <strong>Bienvenue sur DownHub !</strong>
         </div>
-        
         <svg class="mascot-avatar" id="mascot-avatar" viewBox="0 0 100 100" onclick="triggerMascotSpeech()">
-            <!-- Corps Robot Futuriste -->
             <rect x="25" y="35" width="50" height="45" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="3"/>
-            <!-- Tête -->
             <rect x="20" y="10" width="60" height="32" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="3"/>
-            <!-- Écran Visage -->
             <rect x="26" y="15" width="48" height="22" rx="6" fill="#070b14"/>
-            <!-- Yeux animés -->
-            <circle class="mascot-eye" cx="38" cy="26" r="4" fill="#38bdf8"/>
-            <circle class="mascot-eye" cx="62" cy="26" r="4" fill="#38bdf8"/>
-            <!-- Antenne -->
-            <line x1="50" y1="10" x2="50" y2="3" stroke="#38bdf8" stroke-width="3"/>
-            <circle cx="50" cy="3" r="3" fill="#8b5cf6"/>
-            <!-- Bras Gauche Animé (qui fait coucou) -->
-            <g class="mascot-arm-left">
-                <path d="M 22 42 L 8 28" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-                <circle cx="8" cy="28" r="4" fill="#38bdf8"/>
-            </g>
-            <!-- Bras Droit -->
-            <path d="M 78 42 L 90 55" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
-            <circle cx="90" cy="55" r="4" fill="#38bdf8"/>
-            <!-- Coeur / Logo central -->
-            <circle cx="50" cy="58" r="6" fill="#8b5cf6"/>
+            <circle cx="38" cy="26" r="4" fill="#38bdf8"/>
+            <circle cx="62" cy="26" r="4" fill="#38bdf8"/>
+            <path d="M 22 42 L 8 28" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
         </svg>
     </div>
 
-    <!-- PANNEAU ADMIN CACHÉ -->
+    <!-- PANNEAU ADMIN -->
     <div id="admin-panel">
-        <div class="admin-header">
-            <h2 style="margin:0; color: var(--accent-cyan);">📊 Panneau Administrateur</h2>
-            <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none; border:none; color:white; cursor:pointer; font-size: 18px;">✕ Fermer</button>
-        </div>
-
-        <div class="admin-grid">
-            <div class="stat-box">
-                <h4>Total Applications</h4>
-                <div class="number" id="stat-total-apps">0</div>
-            </div>
-            <div class="stat-box">
-                <h4>Total Votes Enregistrés</h4>
-                <div class="number" id="stat-total-votes">0</div>
-            </div>
-            <div class="stat-box">
-                <h4>Application Favorite</h4>
-                <div class="number" id="stat-top-app" style="font-size: 16px;">-</div>
-            </div>
-        </div>
-
-        <h3>Détails des Votes</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Application</th>
-                    <th>Statut</th>
-                    <th>Avancement</th>
-                    <th>Votes</th>
-                </tr>
-            </thead>
-            <tbody id="admin-table-body"></tbody>
-        </table>
+        <h2 style="color:var(--accent-primary);">📊 Panneau Administrateur</h2>
+        <p>Avis & Votes en temps réel enregistrés sur le site.</p>
+        <button onclick="document.getElementById('admin-panel').style.display='none'" class="btn-action">✕ Fermer</button>
     </div>
 
     <script>
         const WHATSAPP_NUMBER = "24398169812";
-        const ADMIN_PASSWORD = "Sabin1234";
-
         const appsData = [
             { id: "downhub-store", title: "DownHub Store", desc: "Catalogue principal d'applications et APKs.", status: "EN COURS", badgeClass: "badge-encours", progress: 85 },
-            { id: "downhub-filemanager", title: "Gestionnaire de Fichiers", desc: "Explorateur de fichiers rapide et sécurisé.", status: "EN COURS", badgeClass: "badge-encours", progress: 65 },
-            { id: "downhub-vpn", title: "DownHub VPN", desc: "Connexion réseau privée et rapide.", status: "PLANIFIÉ", badgeClass: "badge-planifie", progress: 40 },
+            { id: "downhub-filemanager", title: "Gestionnaire de Fichiers", desc: "Explorateur rapide et sécurisé.", status: "EN COURS", badgeClass: "badge-encours", progress: 65 },
+            { id: "downhub-vpn", title: "DownHub VPN", desc: "Connexion réseau privée.", status: "PLANIFIÉ", badgeClass: "badge-planifie", progress: 40 },
             { id: "downhub-ai", title: "DownHub Assistant AI", desc: "Assistant virtuel intelligent.", status: "CONCEPT", badgeClass: "badge-concept", progress: 20 }
         ];
 
-        // GESTION DES SECTIONS AVEC ANIMATION
-        function switchTab(tabName, cardElement) {
-            document.querySelectorAll('.nav-card').forEach(card => card.classList.remove('active'));
-            
-            const currentActive = document.querySelector('.section-content.active');
-            if(currentActive) {
-                currentActive.style.opacity = '0';
-                currentActive.style.transform = 'translateY(15px)';
-                setTimeout(() => {
-                    currentActive.classList.remove('active');
-                    const nextSection = document.getElementById(`sec-${tabName}`);
-                    nextSection.classList.add('active');
-                    setTimeout(() => {
-                        nextSection.style.opacity = '1';
-                        nextSection.style.transform = 'translateY(0)';
-                    }, 50);
-                }, 300);
-            }
+        // 1. CURSEUR LUMINEUX
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('button, .nav-card, input').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
 
+        // 2. PARTICULES CANVAS
+        const pCanvas = document.getElementById('particles-canvas');
+        const pCtx = pCanvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() { pCanvas.width = window.innerWidth; pCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for(let i=0; i<40; i++) {
+            particles.push({ x: Math.random()*pCanvas.width, y: Math.random()*pCanvas.height, r: Math.random()*2+1, dX: (Math.random()-0.5)*0.5, dY: (Math.random()-0.5)*0.5 });
+        }
+
+        function drawParticles() {
+            pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+            pCtx.fillStyle = "rgba(56, 189, 248, 0.3)";
+            particles.forEach(p => {
+                pCtx.beginPath(); pCtx.arc(p.x, p.y, p.r, 0, Math.PI*2); pCtx.fill();
+                p.x += p.dX; p.y += p.dY;
+                if(p.x < 0 || p.x > pCanvas.width) p.dX *= -1;
+                if(p.y < 0 || p.y > pCanvas.height) p.dY *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+
+        // 3. MACHINE À ÉCRIRE
+        const phrases = ["Téléchargez nos APKs Exclusives", "Optimisez votre Smartphone Android", "Découvrez nos outils Web gratuits"];
+        let pIdx = 0, charIdx = 0, isDeleting = false;
+        function typeWriter() {
+            const current = phrases[pIdx];
+            const el = document.getElementById('typewriter-text');
+            if (isDeleting) {
+                el.innerText = current.substring(0, charIdx--);
+            } else {
+                el.innerText = current.substring(0, charIdx++);
+            }
+            if (!isDeleting && charIdx === current.length + 1) {
+                isDeleting = true; setTimeout(typeWriter, 2000);
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false; pIdx = (pIdx + 1) % phrases.length; setTimeout(typeWriter, 500);
+            } else {
+                setTimeout(typeWriter, isDeleting ? 40 : 80);
+            }
+        }
+        typeWriter();
+
+        // 4. COMPTEUR ANIMÉ
+        function animateCounters() {
+            document.querySelectorAll('.stat-card .val').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let count = 0;
+                const speed = target / 50;
+                const update = () => {
+                    count += speed;
+                    if(count < target) {
+                        counter.innerText = (target > 1000 ? '+' : '') + Math.ceil(count) + (target === 98 ? '%' : '');
+                        setTimeout(update, 30);
+                    } else {
+                        counter.innerText = (target > 1000 ? '+' : '') + target + (target === 98 ? '%' : '');
+                    }
+                };
+                update();
+            });
+        }
+        animateCounters();
+
+        // 5. THÈME SWITCHER
+        function setTheme(theme) {
+            document.body.className = theme;
+        }
+
+        // 6. FILTRE D'APPLICATIONS
+        function filterApps() {
+            const query = document.getElementById('appSearchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#apps-container .app-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = title.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        // 7. GENERATEUR DE QR CODE
+        function generateQRCode() {
+            const val = document.getElementById('qr-input').value;
+            const res = document.getElementById('qr-result');
+            if(!val) return alert("Veuillez entrer du texte ou un lien !");
+            res.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(val)}" alt="QR Code" style="border-radius:10px; border:2px solid var(--accent-primary);">`;
+        }
+
+        // NAVIGATION & RENDER
+        function switchTab(tabName, cardElement) {
+            if(navigator.vibrate) navigator.vibrate(20); // Vibrations tactiles mobile
+            document.querySelectorAll('.nav-card').forEach(card => card.classList.remove('active'));
+            document.querySelectorAll('.section-content').forEach(sec => sec.classList.remove('active'));
             cardElement.classList.add('active');
+            document.getElementById(`sec-${tabName}`).classList.add('active');
             if (tabName === 'game') startGame();
         }
 
-        // APPS RENDER + ANIMATION BARRES
         function renderApps() {
             const container = document.getElementById('apps-container');
             const select = document.getElementById('appSelect');
-            container.innerHTML = "";
-            select.innerHTML = "";
-
+            container.innerHTML = ""; select.innerHTML = "";
             appsData.forEach(app => {
-                const votes = parseInt(localStorage.getItem(`votes_${app.id}`)) || 0;
-                const hasVoted = localStorage.getItem(`voted_${app.id}`);
-                const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Bonjour ! Je vous contacte au sujet de : ${app.title}`)}`;
-
                 container.innerHTML += `
                     <div class="app-card">
                         <div>
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="display:flex; justify-content:space-between;">
                                 <h3 style="margin:0;">${app.title}</h3>
                                 <span class="badge ${app.badgeClass}">${app.status}</span>
                             </div>
-                            <p style="color:var(--text-muted); font-size: 14px; margin-top: 10px;">${app.desc}</p>
+                            <p style="color:var(--text-muted); font-size:14px; margin-top:10px;">${app.desc}</p>
                         </div>
                         <div>
-                            <div style="font-size: 12px; margin-top: 15px; color: var(--text-muted);">Avancement : ${app.progress}%</div>
-                            <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-${app.id}" style="width: 0%;"></div></div>
-                            <div class="btn-group">
-                                <button class="btn-action" style="background:#2563eb; color:white;" onclick="vote('${app.id}')">${hasVoted ? '✓ Voté' : '👍 Voter'} (${votes})</button>
-                                <a href="${waUrl}" target="_blank" class="btn-action" style="background:var(--whatsapp-color); color:white;">💬 WhatsApp</a>
-                            </div>
+                            <div style="font-size:12px; margin-top:15px;">Avancement : ${app.progress}%</div>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${app.progress}%;"></div></div>
                         </div>
                     </div>
                 `;
-
                 select.innerHTML += `<option value="${app.title}">${app.title}</option>`;
             });
-
-            // Animation progressive du remplissage des barres de progression
-            setTimeout(() => {
-                appsData.forEach(app => {
-                    const bar = document.getElementById(`bar-${app.id}`);
-                    if(bar) bar.style.width = `${app.progress}%`;
-                });
-            }, 200);
         }
 
-        function vote(appId) {
-            if (localStorage.getItem(`voted_${appId}`)) {
-                alert("Vous avez déjà voté pour cette application !");
-                return;
-            }
-            let currentVotes = parseInt(localStorage.getItem(`votes_${appId}`)) || 0;
-            localStorage.setItem(`votes_${appId}`, currentVotes + 1);
-            localStorage.setItem(`voted_${appId}`, "true");
-            renderApps();
-        }
-
-        // OUTILS LOGIQUE
-        function runSpeedTest() {
-            const res = document.getElementById('speed-result');
-            res.innerText = "⏳ Test de connexion en cours...";
-            const start = Date.now();
-            
-            setTimeout(() => {
-                const latency = Date.now() - start;
-                const speed = (Math.random() * 18 + 5).toFixed(1);
-                res.innerHTML = `⚡ Latence : ${latency} ms <br> 📥 Vitesse estimée : ${speed} Mbps`;
-            }, 1200);
-        }
-
-        function generatePassword() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
-            let pwd = "";
-            for (let i = 0; i < 14; i++) {
-                pwd += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('generated-pwd').value = pwd;
-        }
-
-        function copyPassword() {
-            const input = document.getElementById('generated-pwd');
-            if(!input.value) return;
-            navigator.clipboard.writeText(input.value);
-            alert("Mot de passe copié !");
-        }
-
-        function openBlog(title, text) {
-            alert(`📌 ${title}\n\n${text}`);
-        }
-
-        // JEU CANVAS
+        // JEU + CONFETTIS
         let canvas, ctx, playerX, score, gameInterval, star;
-
         function startGame() {
-            canvas = document.getElementById('gameCanvas');
-            ctx = canvas.getContext('2d');
-            playerX = canvas.width / 2 - 25;
-            score = 0;
+            canvas = document.getElementById('gameCanvas'); ctx = canvas.getContext('2d');
+            playerX = canvas.width / 2 - 25; score = 0;
             star = { x: Math.random() * (canvas.width - 20), y: 0, speed: 3 };
-            
-            document.getElementById('game-score').innerText = "Score : 0";
-
             if (gameInterval) clearInterval(gameInterval);
             gameInterval = setInterval(updateGame, 1000 / 60);
-
-            document.onkeydown = (e) => {
-                if (e.key === "ArrowLeft" && playerX > 0) playerX -= 20;
-                if (e.key === "ArrowRight" && playerX < canvas.width - 50) playerX += 20;
-            };
-
-            canvas.ontouchmove = (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const touchX = e.touches[0].clientX - rect.left;
-                playerX = Math.max(0, Math.min(canvas.width - 50, touchX - 25));
-            };
         }
 
         function updateGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#38bdf8";
-            ctx.fillRect(playerX, canvas.height - 15, 50, 10);
-
-            ctx.fillStyle = "#38bdf8";
-            ctx.beginPath();
-            ctx.arc(star.x + 10, star.y + 10, 8, 0, Math.PI * 2);
-            ctx.fill();
-
+            ctx.fillStyle = "#38bdf8"; ctx.fillRect(playerX, canvas.height - 15, 50, 10);
+            ctx.beginPath(); ctx.arc(star.x + 10, star.y + 10, 8, 0, Math.PI * 2); ctx.fill();
             star.y += star.speed;
-
             if (star.y + 10 >= canvas.height - 15 && star.x >= playerX - 10 && star.x <= playerX + 50) {
                 score += 10;
                 document.getElementById('game-score').innerText = `Score : ${score}`;
+                if(score === 50) confetti(); // Déclenchement Confettis
                 star = { x: Math.random() * (canvas.width - 20), y: 0, speed: star.speed + 0.3 };
             }
-
-            if (star.y > canvas.height) {
-                star = { x: Math.random() * (canvas.width - 20), y: 0, speed: 3 };
-            }
+            if (star.y > canvas.height) star = { x: Math.random() * (canvas.width - 20), y: 0, speed: 3 };
         }
 
-        // MASCOTTE ACCUEIL ET INTERACTION
-        const mascotPhrases = [
-            "👋 Bienvenue sur DownHub Studio !",
-            "⚡ Testez nos outils web ultra-rapides !",
-            "📱 Votez pour vos applications préférées !",
-            "🕹️ Défiez le meilleur score dans le Mini-Jeu !"
-        ];
-        let phraseIdx = 0;
-
-        function triggerMascotSpeech() {
-            const bubble = document.getElementById('mascot-bubble');
-            phraseIdx = (phraseIdx + 1) % mascotPhrases.length;
-            bubble.innerHTML = mascotPhrases[phraseIdx];
-            bubble.classList.add('active');
-
-            setTimeout(() => {
-                bubble.classList.remove('active');
-            }, 4000);
-        }
-
-        // Déclenchement automatique du message de bienvenue à l'ouverture
-        window.addEventListener('load', () => {
-            setTimeout(() => {
+        // MASCOTTE & INACTIVITÉ
+        let idleTimer;
+        function resetIdleTimer() {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(() => {
                 const bubble = document.getElementById('mascot-bubble');
+                bubble.innerHTML = "💡 Besoin d'aide ? N'hésite pas à explorer nos Outils Web !";
                 bubble.classList.add('active');
-                setTimeout(() => {
-                    bubble.classList.remove('active');
-                }, 5000);
-            }, 1000);
-        });
-
-        // ADMIN SECRET
-        function openAdmin() {
-            const pwd = prompt("Entrez le mot de passe Administrateur :");
-            if (pwd === ADMIN_PASSWORD) {
-                document.getElementById('admin-panel').style.display = 'block';
-                let totalVotes = 0, topApp = "-", maxVotes = -1, tableHtml = "";
-
-                appsData.forEach(app => {
-                    const votes = parseInt(localStorage.getItem(`votes_${app.id}`)) || 0;
-                    totalVotes += votes;
-                    if (votes > maxVotes) { maxVotes = votes; topApp = app.title; }
-
-                    tableHtml += `
-                        <tr>
-                            <td><strong>${app.title}</strong></td>
-                            <td><span class="badge ${app.badgeClass}">${app.status}</span></td>
-                            <td>${app.progress}%</td>
-                            <td>👍 <strong>${votes}</strong></td>
-                        </tr>
-                    `;
-                });
-
-                document.getElementById('stat-total-apps').innerText = appsData.length;
-                document.getElementById('stat-total-votes').innerText = totalVotes;
-                document.getElementById('stat-top-app').innerText = maxVotes > 0 ? topApp : "Aucun vote";
-                document.getElementById('admin-table-body').innerHTML = tableHtml;
-            } else if (pwd !== null) {
-                alert("Mot de passe incorrect !");
-            }
+                setTimeout(() => bubble.classList.remove('active'), 4000);
+            }, 15000);
         }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-                e.preventDefault(); openAdmin();
-            }
-        });
-
-        let clickCount = 0;
-        document.getElementById('site-title').addEventListener('click', () => {
-            clickCount++;
-            if (clickCount === 3) { openAdmin(); clickCount = 0; }
-            setTimeout(() => { clickCount = 0; }, 1000);
-        });
-
-        document.getElementById('beta-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = `🚀 *INSCRIPTION BÊTA TEST*\n\n👤 *Nom* : ${document.getElementById('userName').value}\n📞 *Contact* : ${document.getElementById('userEmail').value}\n📱 *App* : ${document.getElementById('appSelect').value}`;
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-        });
+        window.onmousemove = resetIdleTimer;
+        window.onkeypress = resetIdleTimer;
 
         renderApps();
     </script>
